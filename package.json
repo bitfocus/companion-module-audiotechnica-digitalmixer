@@ -1,0 +1,19 @@
+{
+	"name": "audiotechnica-digitalmixer",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bitfocus/companion-module-audiotechnica-digitalmixer.git"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"@companion-module/base": "^1.0.1"
+	},
+	"devDependencies": {
+		"@companion-module/tools": "^0.5.1"
+	}
+}

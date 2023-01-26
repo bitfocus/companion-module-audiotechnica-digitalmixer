@@ -1,0 +1,33 @@
+{
+	"id": "audiotechnica-digitalmixer",
+	"name": "audiotechnica-digitalmixer",
+	"shortname": "atdm",
+	"description": "Controls Audio Technical Digital Mixers",
+	"version": "1.0.0",
+	"license": "MIT",
+	"repository": "git+https://github.com/bitfocus/companion-module-audiotechnica-digitalmixer.git",
+	"bugs": "https://github.com/bitfocus/companion-module-audiotechnica-digitalmixer/issues",
+	"maintainers": [
+		{
+			"name": "Joseph Adams",
+			"email": "josephdadams@gmail.com"
+		}
+	],
+	"legacyIds": [],
+	"runtime": {
+		"type": "node18",
+		"api": "nodejs-ipc",
+		"apiVersion": "0.0.0",
+		"entrypoint": "../index.js"
+	},
+	"manufacturer": "Audio Technica",
+	"products": [
+		"ATDM-0604",
+		"ATDM-0604a",
+		"ATDM-1012"
+	],
+	"keywords": [
+		"Audio",
+		"Mixer"
+	]
+}
