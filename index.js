@@ -281,12 +281,23 @@ class moduleInstance extends InstanceBase {
 
 				let inputGainLevelObj = {
 					id: inputChannel,
-					mic_gain: this.input_gain_table_mic.find((ROW) => ROW.id == params[1].toString()).label,
-					line_gain: this.input_gain_table_line.find((ROW) => ROW.id == params[2].toString()).label,
-					level: this.fader_table.find((ROW) => ROW.id == params[3].toString()).label,
+					mic_gain: this.input_gain_table_mic.find((ROW) => ROW.id == params[1].toString()).id,
+					mic_gain_label: this.input_gain_table_mic.find((ROW) => ROW.id == params[1].toString()).label,
+					line_gain: this.input_gain_table_line.find((ROW) => ROW.id == params[2].toString()).id,
+					line_gain_label: this.input_gain_table_line.find((ROW) => ROW.id == params[2].toString()).label,
+					level: this.fader_table.find((ROW) => ROW.id == params[3].toString()).id,
+					level_label: this.fader_table.find((ROW) => ROW.id == params[3].toString()).label,
 					max_vol_enabled: (params[4].toString() == '1' ? true : false),
-					max_vol: this.fader_table.find((ROW) => ROW.id == params[5].toString()).label,
-					mute: (params[6].toString() == '1' ? true : false)
+					max_vol: this.fader_table.find((ROW) => ROW.id == params[5].toString()).id,
+					max_vol_label: this.fader_table.find((ROW) => ROW.id == params[5].toString()).label,
+					mute: (params[6].toString() == '1' ? true : false),
+					virtual_mic_gain: 0
+				}
+
+				if (model_inputChannelObj.id == 'atdm-1012') {
+					inputGainLevelObj.min_vol_enabled = (params[7].toString() == '1' ? true : false);
+					inputGainLevelObj.min_vol = this.fader_table.find((ROW) => ROW.id == params[8].toString()).id;
+					inputGainLevelObj.min_vol_label = this.fader_table.find((ROW) => ROW.id == params[8].toString()).label;
 				}
 				
 				found = false;
@@ -367,11 +378,14 @@ class moduleInstance extends InstanceBase {
 				outputChannel = params[0].toString();
 				let outputLevelObj = {
 					id: outputChannel,
-					level: this.fader_table.find((ROW) => ROW.id == params[1].toString()).label,
+					level: this.fader_table.find((ROW) => ROW.id == params[1].toString()).id,
+					level_label: this.fader_table.find((ROW) => ROW.id == params[1].toString()).label,
 					max_vol_enabled: (params[2].toString() == '1' ? true : false),
-					max_vol: this.fader_table.find((ROW) => ROW.id == params[3].toString()).label,
+					max_vol: this.fader_table.find((ROW) => ROW.id == params[3].toString()).id,
+					max_vol_label: this.fader_table.find((ROW) => ROW.id == params[3].toString()).label,
 					min_vol_enabled: (params[4].toString() == '1' ? true : false),
-					min_vol: this.fader_table.find((ROW) => ROW.id == params[5].toString()).label,
+					min_vol: this.fader_table.find((ROW) => ROW.id == params[5].toString()).id,
+					min_vol_label: this.fader_table.find((ROW) => ROW.id == params[5].toString()).label,
 				}
 
 				found = false;

@@ -158,11 +158,11 @@ module.exports = {
 						let inputGainLevelObj = this.DATA.input_gain_levels[i];
 						let modelChannelObj = model.input_channels.find((CHANNEL) => CHANNEL.id == inputGainLevelObj.id);
 	
-						variableObj[`${modelChannelObj.variableId}_mic_gain`] = inputGainLevelObj.mic_gain;
-						variableObj[`${modelChannelObj.variableId}_line_gain`] = inputGainLevelObj.line_gain;
-						variableObj[`${modelChannelObj.variableId}_level`] = inputGainLevelObj.level;
+						variableObj[`${modelChannelObj.variableId}_mic_gain`] = inputGainLevelObj.mic_gain_label;
+						variableObj[`${modelChannelObj.variableId}_line_gain`] = inputGainLevelObj.line_gain_label;
+						variableObj[`${modelChannelObj.variableId}_level`] = inputGainLevelObj.level_label;
 						variableObj[`${modelChannelObj.variableId}_maxvolume_enabled`] = (inputGainLevelObj.max_vol_enabled == true ? 'On' : 'Off');
-						variableObj[`${modelChannelObj.variableId}_maxvolume`] = inputGainLevelObj.max_vol;
+						variableObj[`${modelChannelObj.variableId}_maxvolume`] = inputGainLevelObj.max_vol_label;
 						variableObj[`${modelChannelObj.variableId}_mute`] = (inputGainLevelObj.mute == true ? 'On' : 'Off');
 					}
 					this.setVariableValues(variableObj);
@@ -205,10 +205,11 @@ module.exports = {
 						let outputLevelObj = this.DATA.output_levels[i];
 						let modelChannelObj = model.output_channels.find((CHANNEL) => CHANNEL.id == outputLevelObj.id);
 	
+						variableObj[`${modelChannelObj.variableId}_level`] = outputLevelObj.level_label;
 						variableObj[`${modelChannelObj.variableId}_maxvolume_enabled`] = (outputLevelObj.max_vol_enabled == true ? 'On' : 'Off');
-						variableObj[`${modelChannelObj.variableId}_maxvolume`] = outputLevelObj.max_vol;
+						variableObj[`${modelChannelObj.variableId}_maxvolume`] = outputLevelObj.max_vol_label;
 						variableObj[`${modelChannelObj.variableId}_minvolume_enabled`] = (outputLevelObj.min_vol_enabled == true ? 'On' : 'Off');
-						variableObj[`${modelChannelObj.variableId}_minvolume`] = outputLevelObj.min_vol;
+						variableObj[`${modelChannelObj.variableId}_minvolume`] = outputLevelObj.min_vol_label;
 					}
 					this.setVariableValues(variableObj);
 				}

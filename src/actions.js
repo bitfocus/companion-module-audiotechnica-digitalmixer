@@ -104,6 +104,184 @@ module.exports = {
 						choices: constants.fader_table
 					})
 				}
+
+				actions['input_gain_level_increase'] = {
+					name: 'Increase Input Mic Gain Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Input Channel',
+							id: 'input',
+							default: model.input_channels[0].id,
+							choices: model.input_channels
+						}
+					],
+					callback: async (event) => {
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mic_gain', 'increase'))
+					},
+				}
+
+				actions['input_gain_level_decrease'] = {
+					name: 'Decrease Input Mic Gain Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Input Channel',
+							id: 'input',
+							default: model.input_channels[0].id,
+							choices: model.input_channels
+						}
+					],
+					callback: async (event) => {
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mic_gain', 'decrease'))
+					},
+				}
+
+				actions['input_line_level_increase'] = {
+					name: 'Increase Input Line Gain Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Input Channel',
+							id: 'input',
+							default: model.input_channels[0].id,
+							choices: model.input_channels
+						}
+					],
+					callback: async (event) => {
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'line_gain', 'increase'))
+					},
+				}
+
+				actions['input_line_level_decrease'] = {
+					name: 'Decrease Input Line Gain Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Input Channel',
+							id: 'input',
+							default: model.input_channels[0].id,
+							choices: model.input_channels
+						}
+					],
+					callback: async (event) => {
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'line_gain', 'decrease'))
+					},
+				}
+
+				actions['input_level_increase'] = {
+					name: 'Increase Input Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Input Channel',
+							id: 'input',
+							default: model.input_channels[0].id,
+							choices: model.input_channels
+						}
+					],
+					callback: async (event) => {
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'level', 'increase'))
+					},
+				}
+
+				actions['input_level_decrease'] = {
+					name: 'Decrease Input Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Input Channel',
+							id: 'input',
+							default: model.input_channels[0].id,
+							choices: model.input_channels
+						}
+					],
+					callback: async (event) => {
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'level', 'decrease'))
+					},
+				}
+
+				actions['input_max_vol_increase'] = {
+					name: 'Increase Input Max Volume Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Input Channel',
+							id: 'input',
+							default: model.input_channels[0].id,
+							choices: model.input_channels
+						}
+					],
+					callback: async (event) => {
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'max_vol', 'increase'))
+					},
+				}
+
+				actions['input_max_vol_decrease'] = {
+					name: 'Decrease Input Max Volume Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Input Channel',
+							id: 'input',
+							default: model.input_channels[0].id,
+							choices: model.input_channels
+						}
+					],
+					callback: async (event) => {
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'max_vol', 'decrease'))
+					},
+				}
+
+				actions['input_mute'] = {
+					name: 'Mute Input Channel',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Input Channel',
+							id: 'input',
+							default: model.input_channels[0].id,
+							choices: model.input_channels
+						}
+					],
+					callback: async (event) => {
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mute', true))
+					},
+				}
+
+				if (model.id == 'atdm-1012') {
+					actions['input_min_vol_increase'] = {
+						name: 'Increase Input Min Volume Level',
+						options: [
+							{
+								type: 'dropdown',
+								label: 'Input Channel',
+								id: 'input',
+								default: model.input_channels[0].id,
+								choices: model.input_channels
+							}
+						],
+						callback: async (event) => {
+							this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'min_vol', 'increase'))
+						},
+					}
+
+					actions['input_min_vol_decrease'] = {
+						name: 'Decrease Input Min Volume Level',
+						options: [
+							{
+								type: 'dropdown',
+								label: 'Input Channel',
+								id: 'input',
+								default: model.input_channels[0].id,
+								choices: model.input_channels
+							}
+						],
+						callback: async (event) => {
+							this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'min_vol', 'decrease'))
+						},
+					}
+				}
 			}
 
 			if (model.actions.includes('output_level')) {
@@ -171,6 +349,104 @@ module.exports = {
 						default: constants.fader_table[0].id,
 						choices: constants.fader_table
 					})
+				}
+
+				actions['output_level_increase'] = {
+					name: 'Increase Output Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Output Channel',
+							id: 'output',
+							default: model.output_channels[0].id,
+							choices: model.output_channels
+						},
+					],
+					callback: async (event) => {
+						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'increase'))
+					},
+				}
+
+				actions['output_level_decrease'] = {
+					name: 'Decrease Output Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Output Channel',
+							id: 'output',
+							default: model.output_channels[0].id,
+							choices: model.output_channels
+						},
+					],
+					callback: async (event) => {
+						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'decrease'))
+					},
+				}
+
+				actions['output_max_vol_increase'] = {
+					name: 'Increase Output Max Volume Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Output Channel',
+							id: 'output',
+							default: model.output_channels[0].id,
+							choices: model.output_channels
+						},
+					],
+					callback: async (event) => {
+						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'increase'))
+					},
+				}
+
+				actions['output_max_vol_decrease'] = {
+					name: 'Decrease Output Max Volume Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Output Channel',
+							id: 'output',
+							default: model.output_channels[0].id,
+							choices: model.output_channels
+						},
+					],
+					callback: async (event) => {
+						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'decrease'))
+					},
+				}
+
+				if (model.id == 'atdm-1012') {
+					actions['output_min_vol_increase'] = {
+						name: 'Increase Output Min Volume Level',
+						options: [
+							{
+								type: 'dropdown',
+								label: 'Output Channel',
+								id: 'output',
+								default: model.output_channels[0].id,
+								choices: model.output_channels
+							},
+						],
+						callback: async (event) => {
+							this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'increase'))
+						},
+					}
+	
+					actions['output_min_vol_decrease'] = {
+						name: 'Decrease Output Min Volume Level',
+						options: [
+							{
+								type: 'dropdown',
+								label: 'Output Channel',
+								id: 'output',
+								default: model.output_channels[0].id,
+								choices: model.output_channels
+							},
+						],
+						callback: async (event) => {
+							this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'decrease'))
+						},
+					}
 				}
 			}
 
@@ -508,5 +784,204 @@ module.exports = {
 		}
 			
 		this.setActionDefinitions(actions)
+	},
+
+	buildInputGainParams(input, choice, direction) {
+		let model = this.MODELS.find((model) => model.id == this.config.model);
+
+		let params = '';
+
+		let dataObj = this.DATA.input_gain_levels.find((CHANNEL) => CHANNEL.id == input);
+
+		if (dataObj) {
+			let index = 0;
+
+			switch (choice) {
+				case 'mic_gain':
+					index = constants.input_gain_table_mic.findIndex((GAIN) => GAIN.id == dataObj.mic_gain);
+
+					if (direction == 'increase') {
+						if (index < constants.input_gain_table_mic.length - 1) {
+							index++;
+						}
+					}
+					else {
+						if (index > 0) {
+							index--;
+						}
+					}
+
+					dataObj.mic_gain = constants.input_gain_table_mic[index].id;
+
+					break;
+				case 'line_gain':
+					index = constants.input_gain_table_line.findIndex((GAIN) => GAIN.id == dataObj.line_gain);
+
+					if (direction == 'increase') {
+						if (index < constants.input_gain_table_line.length - 1) {
+							index++;
+						}
+					}
+					else {
+						if (index > 0) {
+							index--;
+						}
+					}
+
+					dataObj.line_gain = constants.input_gain_table_line[index].id;
+
+					break;
+				case 'level':
+					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.level);
+
+					if (direction == 'increase') {
+						if (index < constants.fader_table.length - 1) {
+							index++;
+						}
+					}
+					else {
+						if (index > 0) {
+							index--;
+						}
+					}
+					
+					dataObj.level = constants.fader_table[index].id;
+
+					break;
+				case 'max_vol':
+					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.max_vol);
+
+					if (direction == 'increase') {
+						if (index < constants.fader_table.length - 1) {
+							index++;
+						}
+					}
+					else {
+						if (index > 0) {
+							index--;
+						}
+					}
+
+					dataObj.max_vol = constants.fader_table[index].id;
+
+					break;
+				case 'mute':
+					dataObj.mute = direction;
+					break;
+				case 'min_vol':
+					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.min_vol);
+					
+					if (direction == 'increase') {
+						if (index < constants.fader_table.length - 1) {
+							index++;
+						}
+					}
+					else {
+						if (index > 0) {
+							index--;
+						}
+					}
+					
+					dataObj.min_vol = constants.fader_table[index].id;
+
+					break;
+			}
+
+			params += input + ','
+					+ dataObj.mic_gain + ','
+					+ dataObj.line_gain + ','
+					+ dataObj.level + ','
+					+ (dataObj.max_vol_enable ? '1' : '0') + ','
+					+ dataObj.max_vol + ','
+					+ (dataObj.mute ? '1' : '0') + ','
+					+ dataObj.virtual_mic_gain
+
+			if (model.id == 'atdm-1012') {
+				params += ',' 
+					+ (dataObj.min_vol_enable ? '1' : '0') + ','
+					+ dataObj.min_vol_level;
+			}
+		}
+
+		return params;
+	},
+
+	buildOutputLevelParams(output, choice, direction) {
+		let model = this.MODELS.find((model) => model.id == this.config.model);
+
+		let params = '';
+
+		let dataObj = this.DATA.output_levels.find((CHANNEL) => CHANNEL.id == output);
+
+		if (dataObj) {
+			let index = 0;
+
+			switch (choice) {
+				case 'level':
+					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.level);
+
+					if (direction == 'increase') {
+						if (index < constants.fader_table.length - 1) {
+							index++;
+						}
+					}
+					else {
+						if (index > 0) {
+							index--;
+						}
+					}
+					
+					dataObj.level = constants.fader_table[index].id;
+
+					break;
+				case 'max_vol':
+					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.max_vol);
+
+					if (direction == 'increase') {
+						if (index < constants.fader_table.length - 1) {
+							index++;
+						}
+					}
+					else {
+						if (index > 0) {
+							index--;
+						}
+					}
+
+					dataObj.max_vol = constants.fader_table[index].id;
+
+					break;
+				case 'min_vol':
+					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.min_vol);
+					
+					if (direction == 'increase') {
+						if (index < constants.fader_table.length - 1) {
+							index++;
+						}
+					}
+					else {
+						if (index > 0) {
+							index--;
+						}
+					}
+					
+					dataObj.min_vol = constants.fader_table[index].id;
+
+					break;
+			}
+
+			params += output + ','
+				+ dataObj.level + ','
+				+ (dataObj.max_vol_enable ? '1' : '0') + ','
+				+ dataObj.max_vol
+
+			if (model.id == 'atdm-1012') {
+				params += ',' 
+					+ (dataObj.min_vol_enable ? '1' : '0') + ','
+					+ dataObj.min_vol_level;
+			}
+		}
+
+		return params;
 	}
 }

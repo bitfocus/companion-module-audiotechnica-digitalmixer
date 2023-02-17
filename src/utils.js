@@ -16,7 +16,7 @@ module.exports = {
 				+ ' '
 				+ this.CONTROL_END;
 
-		console.log('builtCmd: ' + builtCmd);
+		//console.log('builtCmd: ' + builtCmd);
 		return builtCmd
 	},
 
