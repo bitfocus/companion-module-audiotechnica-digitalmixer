@@ -114,10 +114,18 @@ module.exports = {
 							id: 'input',
 							default: model.input_channels[0].id,
 							choices: model.input_channels
+						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mic_gain', 'increase'))
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mic_gain', 'increase', event.options.steps))
 					},
 				}
 
@@ -130,10 +138,18 @@ module.exports = {
 							id: 'input',
 							default: model.input_channels[0].id,
 							choices: model.input_channels
+						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mic_gain', 'decrease'))
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mic_gain', 'decrease', event.options.steps))
 					},
 				}
 
@@ -146,10 +162,18 @@ module.exports = {
 							id: 'input',
 							default: model.input_channels[0].id,
 							choices: model.input_channels
+						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'line_gain', 'increase'))
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'line_gain', 'increase', event.options.steps))
 					},
 				}
 
@@ -162,10 +186,18 @@ module.exports = {
 							id: 'input',
 							default: model.input_channels[0].id,
 							choices: model.input_channels
+						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'line_gain', 'decrease'))
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'line_gain', 'decrease', event.options.steps))
 					},
 				}
 
@@ -178,10 +210,18 @@ module.exports = {
 							id: 'input',
 							default: model.input_channels[0].id,
 							choices: model.input_channels
+						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'level', 'increase'))
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'level', 'increase', event.options.steps))
 					},
 				}
 
@@ -194,10 +234,18 @@ module.exports = {
 							id: 'input',
 							default: model.input_channels[0].id,
 							choices: model.input_channels
+						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'level', 'decrease'))
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'level', 'decrease', event.options.steps))
 					},
 				}
 
@@ -210,10 +258,18 @@ module.exports = {
 							id: 'input',
 							default: model.input_channels[0].id,
 							choices: model.input_channels
+						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'max_vol', 'increase'))
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'max_vol', 'increase', event.options.steps))
 					},
 				}
 
@@ -226,10 +282,18 @@ module.exports = {
 							id: 'input',
 							default: model.input_channels[0].id,
 							choices: model.input_channels
+						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'max_vol', 'decrease'))
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'max_vol', 'decrease', event.options.steps))
 					},
 				}
 
@@ -242,10 +306,16 @@ module.exports = {
 							id: 'input',
 							default: model.input_channels[0].id,
 							choices: model.input_channels
+						},
+						{
+							type: 'checkbox',
+							label: 'Mute/Unmute',
+							id: 'mute',
+							default: false
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mute', true))
+						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mute', event.options.mute))
 					},
 				}
 
@@ -259,10 +329,18 @@ module.exports = {
 								id: 'input',
 								default: model.input_channels[0].id,
 								choices: model.input_channels
+							},
+							{
+								type: 'number',
+								id: 'steps',							
+								label: 'Steps',
+								default: 1,
+								min: 1,
+								max: 10
 							}
 						],
 						callback: async (event) => {
-							this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'min_vol', 'increase'))
+							this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'min_vol', 'increase', event.options.steps))
 						},
 					}
 
@@ -275,10 +353,18 @@ module.exports = {
 								id: 'input',
 								default: model.input_channels[0].id,
 								choices: model.input_channels
+							},
+							{
+								type: 'number',
+								id: 'steps',							
+								label: 'Steps',
+								default: 1,
+								min: 1,
+								max: 10
 							}
 						],
 						callback: async (event) => {
-							this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'min_vol', 'decrease'))
+							this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'min_vol', 'decrease', event.options.steps))
 						},
 					}
 				}
@@ -361,9 +447,17 @@ module.exports = {
 							default: model.output_channels[0].id,
 							choices: model.output_channels
 						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
+						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'increase'))
+						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'increase', event.options.steps))
 					},
 				}
 
@@ -377,9 +471,17 @@ module.exports = {
 							default: model.output_channels[0].id,
 							choices: model.output_channels
 						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
+						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'decrease'))
+						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'decrease', event.options.steps))
 					},
 				}
 
@@ -393,9 +495,17 @@ module.exports = {
 							default: model.output_channels[0].id,
 							choices: model.output_channels
 						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
+						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'increase'))
+						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'increase', event.options.steps))
 					},
 				}
 
@@ -409,9 +519,17 @@ module.exports = {
 							default: model.output_channels[0].id,
 							choices: model.output_channels
 						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
+						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'decrease'))
+						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'decrease', event.options.steps))
 					},
 				}
 
@@ -426,9 +544,17 @@ module.exports = {
 								default: model.output_channels[0].id,
 								choices: model.output_channels
 							},
+							{
+								type: 'number',
+								id: 'steps',							
+								label: 'Steps',
+								default: 1,
+								min: 1,
+								max: 10
+							}
 						],
 						callback: async (event) => {
-							this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'increase'))
+							this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'increase', event.options.steps))
 						},
 					}
 	
@@ -442,9 +568,17 @@ module.exports = {
 								default: model.output_channels[0].id,
 								choices: model.output_channels
 							},
+							{
+								type: 'number',
+								id: 'steps',							
+								label: 'Steps',
+								default: 1,
+								min: 1,
+								max: 10
+							}
 						],
 						callback: async (event) => {
-							this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'decrease'))
+							this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'decrease', event.options.steps))
 						},
 					}
 				}
@@ -590,8 +724,8 @@ module.exports = {
 							id: 'mute',
 							default: '1',
 							choices: [
-								{ id: '0',  label: 'Unmute'},
-								{ id: '1',  label: 'Mute'}
+								{ id: '0', label: 'Unmute'},
+								{ id: '1', label: 'Mute'}
 							]
 						},
 						{
@@ -600,8 +734,8 @@ module.exports = {
 							id: 'mic',
 							default: '0',
 							choices: [
-								{ id: '0',  label: 'Virtual Mic 1'},
-								{ id: '1',  label: 'Virtual Mic 2'}
+								{ id: '0', label: 'Virtual Mic 1'},
+								{ id: '1', label: 'Virtual Mic 2'}
 							]
 						},
 					],
@@ -786,7 +920,7 @@ module.exports = {
 		this.setActionDefinitions(actions)
 	},
 
-	buildInputGainParams(input, choice, direction) {
+	buildInputGainParams(input, choice, direction, steps) {
 		let model = this.MODELS.find((model) => model.id == this.config.model);
 
 		let params = '';
@@ -801,13 +935,13 @@ module.exports = {
 					index = constants.input_gain_table_mic.findIndex((GAIN) => GAIN.id == dataObj.mic_gain);
 
 					if (direction == 'increase') {
-						if (index < constants.input_gain_table_mic.length - 1) {
-							index++;
+						if (index < (constants.input_gain_table_mic.length - steps - 1)) {
+							index = index + steps;
 						}
 					}
 					else {
-						if (index > 0) {
-							index--;
+						if ((index - steps) >= 0) {
+							index = index - steps;
 						}
 					}
 
@@ -818,13 +952,13 @@ module.exports = {
 					index = constants.input_gain_table_line.findIndex((GAIN) => GAIN.id == dataObj.line_gain);
 
 					if (direction == 'increase') {
-						if (index < constants.input_gain_table_line.length - 1) {
-							index++;
+						if (index < constants.input_gain_table_line.length - steps - 1) {
+							index = index + steps;
 						}
 					}
 					else {
-						if (index > 0) {
-							index--;
+						if ((index - steps) >= 0) {
+							index = index - steps;
 						}
 					}
 
@@ -835,13 +969,13 @@ module.exports = {
 					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.level);
 
 					if (direction == 'increase') {
-						if (index < constants.fader_table.length - 1) {
-							index++;
+						if (index < (constants.fader_table.length - steps - 1)) {
+							index = index + steps;
 						}
 					}
 					else {
-						if (index > 0) {
-							index--;
+						if ((index - steps) >= 0) {
+							index = index - steps;
 						}
 					}
 					
@@ -852,13 +986,13 @@ module.exports = {
 					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.max_vol);
 
 					if (direction == 'increase') {
-						if (index < constants.fader_table.length - 1) {
-							index++;
+						if (index < (constants.fader_table.length - steps - 1)) {
+							index = index + steps;
 						}
 					}
 					else {
-						if (index > 0) {
-							index--;
+						if ((index - steps) >= 0) {
+							index = index - steps;
 						}
 					}
 
@@ -872,13 +1006,13 @@ module.exports = {
 					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.min_vol);
 					
 					if (direction == 'increase') {
-						if (index < constants.fader_table.length - 1) {
-							index++;
+						if (index < (constants.fader_table.length - steps - 1)) {
+							index = index + steps;
 						}
 					}
 					else {
-						if (index > 0) {
-							index--;
+						if ((index - steps) >= 0) {
+							index = index - steps;
 						}
 					}
 					
@@ -921,13 +1055,13 @@ module.exports = {
 					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.level);
 
 					if (direction == 'increase') {
-						if (index < constants.fader_table.length - 1) {
-							index++;
+						if (index < (constants.fader_table.length - steps - 1)) {
+							index = index + steps;
 						}
 					}
 					else {
-						if (index > 0) {
-							index--;
+						if ((index - steps) >= 0) {
+							index = index - steps;
 						}
 					}
 					
@@ -938,13 +1072,13 @@ module.exports = {
 					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.max_vol);
 
 					if (direction == 'increase') {
-						if (index < constants.fader_table.length - 1) {
-							index++;
+						if (index < (constants.fader_table.length - steps - 1)) {
+							index = index + steps;
 						}
 					}
 					else {
-						if (index > 0) {
-							index--;
+						if ((index - steps) >= 0) {
+							index = index - steps;
 						}
 					}
 
@@ -955,13 +1089,13 @@ module.exports = {
 					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.min_vol);
 					
 					if (direction == 'increase') {
-						if (index < constants.fader_table.length - 1) {
-							index++;
+						if (index < (constants.fader_table.length - steps - 1)) {
+							index = index + steps;
 						}
 					}
 					else {
-						if (index > 0) {
-							index--;
+						if ((index - steps) >= 0) {
+							index = index - steps;
 						}
 					}
 					
