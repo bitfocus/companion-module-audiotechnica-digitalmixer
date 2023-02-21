@@ -98,6 +98,7 @@ module.exports = {
 				'preset_number',
 				'partial_preset_number',
 				'level_meter',
+				'open_channel_notice'
 			],
 			input_channels: [
 				{ id: '0', label: 'Input 1', variableId: 'input1'},
