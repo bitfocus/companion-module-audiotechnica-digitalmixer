@@ -254,8 +254,9 @@ module.exports = {
 				}
 
 				if (model.variables.includes('open_channel_notice')) {
+					let variableObj = {};
+
 					if (this.config.model == 'atdm-1012') {
-						let variableObj = {};
 						for (let i = 0; i < this.DATA.open_channels.length; i++) {
 							let openChannelObj = this.DATA.open_channels[i];
 							let modelChannelObj = model.input_channels.find((CHANNEL) => CHANNEL.id == openChannelObj.id);
@@ -263,7 +264,6 @@ module.exports = {
 						}
 					}
 					else if (this.config.model == 'atdm-0604a') {
-						let variableObj = {};
 						for (let i = 0; i < this.DATA.open_channels.length; i++) {
 							let openChannelObj = this.DATA.open_channels[i];
 							let modelChannelObj = model.input_channels.find((CHANNEL) => CHANNEL.id == openChannelObj.id);
