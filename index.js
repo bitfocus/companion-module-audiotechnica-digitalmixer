@@ -500,31 +500,44 @@ class moduleInstance extends InstanceBase {
 
 				break
 			case 'md_open_channel_notice':
-				inputChannel = params[0].toString();
+				if (this.config.model == 'atdm-1012') {
+					inputChannel = params[0].toString();
 
-				let openChannelObj = {
-					id: inputChannel,
-					smartmixGroup: params[1].toString(),
-					status: (params[2].toString() == '1' ? true : false)
-				}
-
-				found = false;
-
-				for (let i = 0; i < this.DATA.open_channels.length; i++) { 
-					if (this.DATA.open_channels[i].id == inputChannel) {
-						if (this.DATA.open_channels[i].smartmixGroup == openChannelObj.smartmixGroup) {
-							//update in place
-							this.DATA.open_channels[i] = openChannelObj;
-							found = true;
-							break;
+					let openChannelObj = {
+						id: inputChannel,
+						smartmixGroup: params[1].toString(),
+						status: (params[2].toString() == '1' ? true : false)
+					}
+	
+					found = false;
+	
+					for (let i = 0; i < this.DATA.open_channels.length; i++) { 
+						if (this.DATA.open_channels[i].id == inputChannel) {
+							if (this.DATA.open_channels[i].smartmixGroup == openChannelObj.smartmixGroup) {
+								//update in place
+								this.DATA.open_channels[i] = openChannelObj;
+								found = true;
+								break;
+							}
 						}
 					}
+	
+					if (!found) {
+						//add to array
+						this.DATA.open_channels.push(openChannelObj);
+					}
+				}
+				else if (this.config.model == 'atdm-0604a') {
+					this.DATA.open_channels = []; //reset the array
+
+					this.DATA.open_channels.push({ id: '0', status: (params[0].toString() == '1' ? true : false)}); //input 1
+					this.DATA.open_channels.push({ id: '1', status: (params[1].toString() == '1' ? true : false)}); //input 2
+					this.DATA.open_channels.push({ id: '2', status: (params[2].toString() == '1' ? true : false)}); //input 3
+					this.DATA.open_channels.push({ id: '3', status: (params[3].toString() == '1' ? true : false)}); //input 4
+					this.DATA.open_channels.push({ id: '4', status: (params[4].toString() == '1' ? true : false)}); //input 5
+					this.DATA.open_channels.push({ id: '5', status: (params[5].toString() == '1' ? true : false)}); //input 6			
 				}
 
-				if (!found) {
-					//add to array
-					this.DATA.input_channel_settings.push(openChannelObj);
-				}
 				break;
 		}
 

@@ -101,11 +101,18 @@ module.exports = {
 			}
 
 			if (model.variables.includes('open_channel_notice')) {
-				for (let i = 0; i < model.input_channels.length; i++) {
-					for (let j = 1; j <= 4; j++) {
-						variables.push({ variableId: `${model.input_channels[i].variableId}_smartmix${j}_open`, name: `${model.input_channels[i].label} Smart Mix ${j} Open`})
-					}					
+				if (model.id == 'atdm-1012') {
+					for (let i = 0; i < model.input_channels.length; i++) {
+						for (let j = 1; j <= 4; j++) {
+							variables.push({ variableId: `${model.input_channels[i].variableId}_smartmix${j}_open`, name: `${model.input_channels[i].label} Smart Mix ${j} Open`})
+						}					
+					}
 				}
+				else if (model.id == 'atdm-0604a') {
+					for (let i = 0; i < 6; i++) {
+						variables.push({ variableId: `${model.input_channels[i].variableId}_open`, name: `${model.input_channels[i].label} Open`})
+					}
+				}				
 			}
 		}
 
@@ -247,12 +254,24 @@ module.exports = {
 				}
 
 				if (model.variables.includes('open_channel_notice')) {
-					let variableObj = {};
-					for (let i = 0; i < this.DATA.open_channels.length; i++) {
-						let openChannelObj = this.DATA.open_channels[i];
-						let modelChannelObj = model.input_channels.find((CHANNEL) => CHANNEL.id == openChannelObj.id);
-						variableObj[`${modelChannelObj.variableId}_smartmix${openChannelObj.smartMixGroup}_open`] = (openChannelObj.status == true ? 'Open' : 'Closed');
+					if (this.config.model == 'atdm-1012') {
+						let variableObj = {};
+						for (let i = 0; i < this.DATA.open_channels.length; i++) {
+							let openChannelObj = this.DATA.open_channels[i];
+							let modelChannelObj = model.input_channels.find((CHANNEL) => CHANNEL.id == openChannelObj.id);
+							variableObj[`${modelChannelObj.variableId}_smartmix${openChannelObj.smartMixGroup}_open`] = (openChannelObj.status == true ? 'Open' : 'Closed');
+						}
 					}
+					else if (this.config.model == 'atdm-0604a') {
+						let variableObj = {};
+						for (let i = 0; i < this.DATA.open_channels.length; i++) {
+							let openChannelObj = this.DATA.open_channels[i];
+							let modelChannelObj = model.input_channels.find((CHANNEL) => CHANNEL.id == openChannelObj.id);
+							variableObj[`${modelChannelObj.variableId}_open`] = (openChannelObj.status == true ? 'Open' : 'Closed');
+						}
+					}
+
+					this.setVariableValues(variableObj);
 				}
 			}
 		}
