@@ -278,6 +278,5 @@ module.exports = {
 		catch(error) {
 			this.log('error', `Error checking variables: ${error.toString()}`)
 		}
-		
 	}
 }

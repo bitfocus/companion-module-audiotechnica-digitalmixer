@@ -84,7 +84,7 @@ module.exports = {
 								+ event.options.min_volume_level;
 						}
 
-						this.sendCommmand('s_input_gain_level', 'S', params)
+						this.sendCommand('s_input_gain_level', 'S', params)
 					},
 				}
 
@@ -125,7 +125,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mic_gain', 'increase', event.options.steps))
+						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mic_gain', 'increase', event.options.steps))
 					},
 				}
 
@@ -149,7 +149,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mic_gain', 'decrease', event.options.steps))
+						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mic_gain', 'decrease', event.options.steps))
 					},
 				}
 
@@ -173,7 +173,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'line_gain', 'increase', event.options.steps))
+						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'line_gain', 'increase', event.options.steps))
 					},
 				}
 
@@ -197,7 +197,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'line_gain', 'decrease', event.options.steps))
+						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'line_gain', 'decrease', event.options.steps))
 					},
 				}
 
@@ -221,7 +221,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'level', 'increase', event.options.steps))
+						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'level', 'increase', event.options.steps))
 					},
 				}
 
@@ -245,7 +245,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'level', 'decrease', event.options.steps))
+						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'level', 'decrease', event.options.steps))
 					},
 				}
 
@@ -269,7 +269,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'max_vol', 'increase', event.options.steps))
+						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'max_vol', 'increase', event.options.steps))
 					},
 				}
 
@@ -293,7 +293,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'max_vol', 'decrease', event.options.steps))
+						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'max_vol', 'decrease', event.options.steps))
 					},
 				}
 
@@ -315,7 +315,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mute', event.options.mute))
+						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mute', event.options.mute))
 					},
 				}
 
@@ -340,7 +340,7 @@ module.exports = {
 							}
 						],
 						callback: async (event) => {
-							this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'min_vol', 'increase', event.options.steps))
+							this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'min_vol', 'increase', event.options.steps))
 						},
 					}
 
@@ -364,7 +364,7 @@ module.exports = {
 							}
 						],
 						callback: async (event) => {
-							this.sendCommmand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'min_vol', 'decrease', event.options.steps))
+							this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'min_vol', 'decrease', event.options.steps))
 						},
 					}
 				}
@@ -416,7 +416,7 @@ module.exports = {
 								+ event.options.min_volume_level;
 						}
 	
-						this.sendCommmand('s_output_level', 'S', params)
+						this.sendCommand('s_output_level', 'S', params)
 					},
 				}
 
@@ -457,7 +457,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'increase', event.options.steps))
+						this.sendCommand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'increase', event.options.steps))
 					},
 				}
 
@@ -481,7 +481,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'decrease', event.options.steps))
+						this.sendCommand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'decrease', event.options.steps))
 					},
 				}
 
@@ -505,7 +505,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'increase', event.options.steps))
+						this.sendCommand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'increase', event.options.steps))
 					},
 				}
 
@@ -529,7 +529,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'decrease', event.options.steps))
+						this.sendCommand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'decrease', event.options.steps))
 					},
 				}
 
@@ -554,7 +554,7 @@ module.exports = {
 							}
 						],
 						callback: async (event) => {
-							this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'increase', event.options.steps))
+							this.sendCommand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'increase', event.options.steps))
 						},
 					}
 	
@@ -578,7 +578,7 @@ module.exports = {
 							}
 						],
 						callback: async (event) => {
-							this.sendCommmand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'decrease', event.options.steps))
+							this.sendCommand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'decrease', event.options.steps))
 						},
 					}
 				}
@@ -608,7 +608,7 @@ module.exports = {
 						params += event.options.output + ','
 								+ (event.options.mute ? '1' : '0')
 	
-						this.sendCommmand('s_output_mute', 'S', params)
+						this.sendCommand('s_output_mute', 'S', params)
 					},
 				}
 			}
@@ -709,7 +709,7 @@ module.exports = {
 								+ event.options.band7 + ','
 								+ event.options.band8
 	
-						this.sendCommmand('s_output_mute', 'S', params)
+						this.sendCommand('s_output_mute', 'S', params)
 					},
 				}
 			}
@@ -744,7 +744,7 @@ module.exports = {
 	
 						params += event.options.mute + ',' + event.options.mic
 	
-						this.sendCommmand('s_arraymic_mute', 'S', params)
+						this.sendCommand('s_arraymic_mute', 'S', params)
 					},
 				}
 			}
@@ -801,7 +801,7 @@ module.exports = {
 								+ event.options.fader + ','
 								+ event.options.level
 	
-						this.sendCommmand('SOPL', 'S', params)
+						this.sendCommand('SOPL', 'S', params)
 					},
 				}
 			}
@@ -856,7 +856,7 @@ module.exports = {
 								+ event.options.fader + ','
 								+ (event.options.mute ? '1' : '0')
 	
-						this.sendCommmand('SOPM', 'S', params)
+						this.sendCommand('SOPM', 'S', params)
 					},
 				}
 			}
@@ -887,7 +887,7 @@ module.exports = {
 	
 						params += event.options.bank;
 	
-						this.sendCommmand('call_preset', 'S', params)
+						this.sendCommand('call_preset', 'S', params)
 					},
 				}
 			}
@@ -910,7 +910,7 @@ module.exports = {
 	
 						params += event.options.partial;
 	
-						this.sendCommmand('call_partial_preset', 'S', params)
+						this.sendCommand('call_partial_preset', 'S', params)
 					},
 				}
 			}

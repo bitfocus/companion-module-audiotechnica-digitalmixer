@@ -555,7 +555,7 @@ class moduleInstance extends InstanceBase {
 					if (model.data_request.includes('gopl')) {
 						for (let i = 1; i <= 8; i++) {
 							for (let j = 1; j <=8; j++) {
-								this.sendCommmand('GOPL', 'O', `${i},${j}`)
+								this.sendCommand('GOPL', 'O', `${i},${j}`)
 							}
 						}
 					}
@@ -563,52 +563,52 @@ class moduleInstance extends InstanceBase {
 					if (model.data_request.includes('gopm')) {
 						for (let i = 1; i <= 8; i++) {
 							for (let j = 1; j <=8; j++) {
-								this.sendCommmand('GOPM', 'O', `${i},${j}`)
+								this.sendCommand('GOPM', 'O', `${i},${j}`)
 							}
 						}
 					}
 
 					if (model.data_request.includes('input_channel_settings')) {
 						for (let i = 0; i < model.input_channels.length; i++) {
-							this.sendCommmand('g_input_channel_settings', 'O', `${model.input_channels[i].id}`)
+							this.sendCommand('g_input_channel_settings', 'O', `${model.input_channels[i].id}`)
 						}
 					}
 
 					if (model.data_request.includes('input_gain_level')) {
 						for (let i = 0; i < model.input_channels.length; i++) {
-							this.sendCommmand('g_input_gain_level', 'O', `${model.input_channels[i].id}`)
+							this.sendCommand('g_input_gain_level', 'O', `${model.input_channels[i].id}`)
 						}
 					}
 
 					if (model.data_request.includes('output_channel_settings')) {
 						for (let i = 0; i < model.output_channels.length; i++) {
-							this.sendCommmand('g_output_channel_settings', 'O', `${model.output_channels[i].id}`)
+							this.sendCommand('g_output_channel_settings', 'O', `${model.output_channels[i].id}`)
 						}
 					}
 
 					if (model.data_request.includes('output_level')) {
 						for (let i = 0; i < model.output_channels.length; i++) {
-							this.sendCommmand('g_output_level', 'O', `${model.output_channels[i].id}`)
+							this.sendCommand('g_output_level', 'O', `${model.output_channels[i].id}`)
 						}
 					}
 
 					if (model.data_request.includes('output_mute')) {
 						for (let i = 0; i < model.output_channels.length; i++) {
-							this.sendCommmand('g_output_mute', 'O', `${model.output_channels[i].id}`)
+							this.sendCommand('g_output_mute', 'O', `${model.output_channels[i].id}`)
 						}
 					}
 
 					if (model.data_request.includes('preset_number')) {
-						this.sendCommmand('g_preset_number', 'O', ``)
+						this.sendCommand('g_preset_number', 'O', ``)
 					}
 
 					if (model.data_request.includes('partial_preset_number')) {
-						this.sendCommmand('g_partial_preset_number', 'O', ``)
+						this.sendCommand('g_partial_preset_number', 'O', ``)
 					}
 
 					if (model.data_request.includes('level_meter')) {
 						for (let i = 0; i <= 43; i++) {
-							//this.sendCommmand('g_level_meter', 'O', `${i}`)
+							//this.sendCommand('g_level_meter', 'O', `${i}`)
 						}
 					}
 				}
