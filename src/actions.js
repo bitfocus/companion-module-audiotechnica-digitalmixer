@@ -457,7 +457,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'increase', event.options.steps))
+						this.sendCommand('s_output_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'increase', event.options.steps))
 					},
 				}
 
@@ -481,7 +481,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'decrease', event.options.steps))
+						this.sendCommand('s_output_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'decrease', event.options.steps))
 					},
 				}
 
@@ -505,7 +505,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'increase', event.options.steps))
+						this.sendCommand('s_output_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'increase', event.options.steps))
 					},
 				}
 
@@ -529,7 +529,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'decrease', event.options.steps))
+						this.sendCommand('s_output_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'decrease', event.options.steps))
 					},
 				}
 
@@ -554,7 +554,7 @@ module.exports = {
 							}
 						],
 						callback: async (event) => {
-							this.sendCommand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'increase', event.options.steps))
+							this.sendCommand('s_output_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'increase', event.options.steps))
 						},
 					}
 	
@@ -578,7 +578,7 @@ module.exports = {
 							}
 						],
 						callback: async (event) => {
-							this.sendCommand('s_input_gain_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'decrease', event.options.steps))
+							this.sendCommand('s_output_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'decrease', event.options.steps))
 						},
 					}
 				}

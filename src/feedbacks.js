@@ -121,7 +121,7 @@ module.exports = {
 			}
 
 			if (model.feedbacks.includes('lowcut')) {
-				feedbacks['phantom_power'] = {
+				feedbacks['lowcut'] = {
 					type: 'boolean',
 					name: 'Low Cut is On',
 					description: 'Show feedback for Low Cut State',

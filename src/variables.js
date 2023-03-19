@@ -28,7 +28,7 @@ module.exports = {
 				}
 			}
 
-			if (model.variables.includes('input_gain_level')) {
+			if (model.variables.includes('input_channel_settings')) {
 				for (let i = 0; i < model.input_channels.length; i++) {
 					variables.push({ variableId: `${model.input_channels[i].variableId}_source`, name: `${model.input_channels[i].label} Source`})
 					variables.push({ variableId: `${model.input_channels[i].variableId}_phantompower`, name: `${model.input_channels[i].label} Phantom Power`})
