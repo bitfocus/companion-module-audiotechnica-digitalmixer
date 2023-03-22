@@ -182,7 +182,7 @@ class moduleInstance extends InstanceBase {
 		}
 	}
 
-	sendCommmand(cmd, handshake, params) {
+	sendCommand(cmd, handshake, params) {
 		if (cmd !== undefined) {
 			if (this.socket !== undefined && this.socket.isConnected) {
 				this.socket.send(this.buildCommand(cmd, handshake, params))
