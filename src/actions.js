@@ -84,6 +84,8 @@ module.exports = {
 								+ event.options.min_volume_level;
 						}
 
+						//console.log(params)
+
 						this.sendCommand('s_input_gain_level', 'S', params)
 					},
 				}
@@ -221,7 +223,14 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'level', 'increase', event.options.steps))
+						let params = this.buildInputGainParams(event.options.input, 'mic_gain', 'increase', event.options.steps);
+						if (model.id == 'atdm-1012') {
+							params = params.split(',');
+							this.sendCommand('sicl', 'S', event.options.input + ',' + params[3]);
+						}
+						else {
+							this.sendCommand('s_input_gain_level', 'S', params)
+						}
 					},
 				}
 
@@ -245,7 +254,14 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'level', 'decrease', event.options.steps))
+						let params = this.buildInputGainParams(event.options.input, 'level', 'decrease', event.options.steps);
+						if (model.id == 'atdm-1012') {
+							params = params.split(',');
+							this.sendCommand('sicl', 'S', event.options.input + ',' + params[3]);
+						}
+						else {
+							this.sendCommand('s_input_gain_level', 'S', params)
+						}
 					},
 				}
 
@@ -315,7 +331,17 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mute', event.options.mute))
+						let params = this.buildInputGainParams(event.options.input, 'mute', event.options.mute);
+						console.log('params: ' + params);
+						if (model.id == 'atdm-1012') {
+							params = params.split(',');
+							console.log(params)
+							console.log('**********')
+							this.sendCommand('SICM', 'S', event.options.input + ',' + params[6]);
+						}
+						else {
+							this.sendCommand('s_input_gain_level', 'S', params)
+						}
 					},
 				}
 
@@ -867,27 +893,23 @@ module.exports = {
 					options: [
 						{
 							type: 'dropdown',
-							label: 'Bank Number',
-							id: 'bank',
+							label: 'Preset/Bank Number',
+							id: 'preset',
 							default: 1,
-							choices: [
-								{ id: 1, label: 'Bank 1'},
-								{ id: 2, label: 'Bank 2'},
-								{ id: 3, label: 'Bank 3'},
-								{ id: 4, label: 'Bank 4'},
-								{ id: 5, label: 'Bank 5'},
-								{ id: 6, label: 'Bank 6'},
-								{ id: 7, label: 'Bank 7'},
-								{ id: 8, label: 'Bank 8'}
-							]
+							choices: model.preset_choices
 						},
 					],
 					callback: async (event) => {
 						let params = '';
 	
-						params += event.options.bank;
-	
-						this.sendCommand('call_preset', 'S', params)
+						params += event.options.preset;
+
+						if (model.id == 'atdm-1012') {
+							this.sendCommand('CALLP', 'S', params)
+						}
+						else {
+							this.sendCommand('call_preset', 'S', params)
+						}
 					},
 				}
 			}
@@ -920,7 +942,7 @@ module.exports = {
 		this.setActionDefinitions(actions)
 	},
 
-	buildInputGainParams(input, choice, direction, steps) {
+	buildInputGainParams(input, choice, direction, steps=0) {
 		let model = this.MODELS.find((model) => model.id == this.config.model);
 
 		let params = '';
@@ -928,6 +950,8 @@ module.exports = {
 		let dataObj = this.DATA.input_gain_levels.find((CHANNEL) => CHANNEL.id == input);
 
 		if (dataObj) {
+			console.log('dataObj')
+			console.log(dataObj);
 			let index = 0;
 
 			switch (choice) {
@@ -996,6 +1020,7 @@ module.exports = {
 						}
 					}
 
+					dataObj.max_vol_enable = true;
 					dataObj.max_vol = constants.fader_table[index].id;
 
 					break;
@@ -1016,6 +1041,7 @@ module.exports = {
 						}
 					}
 					
+					dataObj.min_vol_enable = true;
 					dataObj.min_vol = constants.fader_table[index].id;
 
 					break;
@@ -1033,7 +1059,7 @@ module.exports = {
 			if (model.id == 'atdm-1012') {
 				params += ',' 
 					+ (dataObj.min_vol_enable ? '1' : '0') + ','
-					+ dataObj.min_vol_level;
+					+ dataObj.min_vol;
 			}
 		}
 

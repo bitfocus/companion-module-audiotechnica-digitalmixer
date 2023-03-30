@@ -29,7 +29,7 @@ module.exports = {
 			}
 
 			if (model.variables.includes('input_channel_settings')) {
-				for (let i = 0; i < model.input_channels.length; i++) {
+				for (let i = 0; i < model.input_channels_request.length; i++) {
 					variables.push({ variableId: `${model.input_channels[i].variableId}_source`, name: `${model.input_channels[i].label} Source`})
 					variables.push({ variableId: `${model.input_channels[i].variableId}_phantompower`, name: `${model.input_channels[i].label} Phantom Power`})
 					variables.push({ variableId: `${model.input_channels[i].variableId}_phase`, name: `${model.input_channels[i].label} Phase`})
@@ -48,8 +48,20 @@ module.exports = {
 				}
 			}
 
+			if (model.variables.includes('sub_input_channel_settings')) {
+				for (let i = 0; i < model.sub_input_channels.length; i++) {
+					variables.push({ variableId: `${model.sub_input_channels[i].variableId}_source`, name: `${model.sub_input_channels[i].label} Source`})
+					variables.push({ variableId: `${model.sub_input_channels[i].variableId}_inputgain`, name: `${model.sub_input_channels[i].label} Input Gain`})
+					variables.push({ variableId: `${model.sub_input_channels[i].variableId}_lowcut`, name: `${model.sub_input_channels[i].label} Low Cut`})
+					variables.push({ variableId: `${model.sub_input_channels[i].variableId}_link`, name: `${model.sub_input_channels[i].label} Link`})
+					variables.push({ variableId: `${model.sub_input_channels[i].variableId}_channelname`, name: `${model.sub_input_channels[i].label} Channel Name`})
+					variables.push({ variableId: `${model.sub_input_channels[i].variableId}_color`, name: `${model.sub_input_channels[i].label} Color`})
+					variables.push({ variableId: `${model.sub_input_channels[i].variableId}_fadergroup`, name: `${model.sub_input_channels[i].label} Fader Group`})
+				}
+			}
+
 			if (model.variables.includes('input_gain_level')) {
-				for (let i = 0; i < model.input_channels.length; i++) {
+				for (let i = 0; i < model.input_channels_request.length; i++) {
 					variables.push({ variableId: `${model.input_channels[i].variableId}_mic_gain`, name: `${model.input_channels[i].label} Mic Gain`})
 					variables.push({ variableId: `${model.input_channels[i].variableId}_line_gain`, name: `${model.input_channels[i].label} Line Gain`})
 					variables.push({ variableId: `${model.input_channels[i].variableId}_level`, name: `${model.input_channels[i].label} Level`})
@@ -102,7 +114,7 @@ module.exports = {
 
 			if (model.variables.includes('open_channel_notice')) {
 				if (model.id == 'atdm-1012') {
-					for (let i = 0; i < model.input_channels.length; i++) {
+					for (let i = 0; i < model.input_channels_request.length; i++) {
 						for (let j = 1; j <= 4; j++) {
 							variables.push({ variableId: `${model.input_channels[i].variableId}_smartmix${j}_open`, name: `${model.input_channels[i].label} Smart Mix ${j} Open`})
 						}					
@@ -133,13 +145,8 @@ module.exports = {
 					for (let i = 0; i < this.DATA.input_channel_settings.length; i++) {
 					let inputChannelSettingsObj = this.DATA.input_channel_settings[i];
 						let modelChannelObj = model.input_channels.find((CHANNEL) => CHANNEL.id == inputChannelSettingsObj.id);
-	
-						let sourceObj = this.input_channel_settings_sources.find((SOURCE) => { SOURCE.id == inputChannelSettingsObj.source})
-						let sourceLabel = '';
-						if (sourceObj) {
-							sourceLabel = sourceObj.label;
-						}
-						variableObj[`${modelChannelObj.variableId}_source`] = sourceLabel;
+							
+						variableObj[`${modelChannelObj.variableId}_source`] = model.input_channel_sources.find((SOURCE) => SOURCE.id == inputChannelSettingsObj.source).label || '';
 						variableObj[`${modelChannelObj.variableId}_phantompower`] = (inputChannelSettingsObj.phantomPower == true ? 'On' : 'Off')
 						variableObj[`${modelChannelObj.variableId}_phase`] = inputChannelSettingsObj.phase;
 						variableObj[`${modelChannelObj.variableId}_lowcut`] = (inputChannelSettingsObj.lowCut == true ? 'On' : 'Off');
@@ -147,13 +154,31 @@ module.exports = {
 						variableObj[`${modelChannelObj.variableId}_smartmix`] = (inputChannelSettingsObj.smartMix == true ? 'On' : 'Off');
 						variableObj[`${modelChannelObj.variableId}_link`] = inputChannelSettingsObj.link;
 						variableObj[`${modelChannelObj.variableId}_channelname`] = inputChannelSettingsObj.channelName;
-						variableObj[`${modelChannelObj.variableId}_color`] = inputChannelSettingsObj.color;
+						variableObj[`${modelChannelObj.variableId}_color`] = model.colors.find((COLOR) => COLOR.id == inputChannelSettingsObj.color).label || '';
 						variableObj[`${modelChannelObj.variableId}_virtualmic_orientation`] = inputChannelSettingsObj.virtualMicOrientation;
 						variableObj[`${modelChannelObj.variableId}_virtualmic_tilt`] = inputChannelSettingsObj.virtualMicTilt;
 						variableObj[`${modelChannelObj.variableId}_virtualmic_pattern`] = inputChannelSettingsObj.virtualMicPattern;
 						variableObj[`${modelChannelObj.variableId}_fadergroup`] = inputChannelSettingsObj.faderGroup;
 						variableObj[`${modelChannelObj.variableId}_smartmixgroup`] = inputChannelSettingsObj.smartMixGroup;
 						variableObj[`${modelChannelObj.variableId}_mono`] = inputChannelSettingsObj.mono;
+					}
+	
+					this.setVariableValues(variableObj);
+				}
+
+				if (model.variables.includes('sub_input_channel_settings')) {
+					let variableObj = {};
+					for (let i = 0; i < this.DATA.sub_input_channel_settings.length; i++) {
+					let subinputChannelSettingsObj = this.DATA.sub_input_channel_settings[i];
+						let modelChannelObj = model.sub_input_channels.find((CHANNEL) => CHANNEL.id == subinputChannelSettingsObj.id);
+	
+						variableObj[`${modelChannelObj.variableId}_source`] = model.sub_input_channel_sources.find((SOURCE) => SOURCE.id == subinputChannelSettingsObj.source).label || '';
+						variableObj[`${modelChannelObj.variableId}_inputgain`] = subinputChannelSettingsObj.input_gain_label;
+						variableObj[`${modelChannelObj.variableId}_lowcut`] = (subinputChannelSettingsObj.lowCut == true ? 'On' : 'Off');
+						variableObj[`${modelChannelObj.variableId}_link`] = subinputChannelSettingsObj.link;
+						variableObj[`${modelChannelObj.variableId}_channelname`] = subinputChannelSettingsObj.channelName;
+						variableObj[`${modelChannelObj.variableId}_color`] = subinputChannelSettingsObj.color;
+						variableObj[`${modelChannelObj.variableId}_fadergroup`] = subinputChannelSettingsObj.faderGroup;
 					}
 	
 					this.setVariableValues(variableObj);
