@@ -611,7 +611,7 @@ module.exports = {
 			}
 
 			if (model.actions.includes('output_mute')) {
-				actions['output_level'] = {
+				actions['output_mute'] = {
 					name: 'Set Output Mute',
 					options: [
 						{
