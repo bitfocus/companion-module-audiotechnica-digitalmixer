@@ -81,8 +81,6 @@ module.exports = {
 				'output_level',
 				'output_channel_settings',
 				'output_mute',
-				'preset_number',
-				'partial_preset_number',
 				'level_meter',
 			]
 		},

@@ -14,7 +14,7 @@ const utils = require('./src/utils')
 const models = require('./src/models')
 const constants = require('./src/constants')
 
-class moduleInstance extends InstanceBase {
+class atdmInstance extends InstanceBase {
 	constructor(internal) {
 		super(internal)
 
@@ -31,6 +31,9 @@ class moduleInstance extends InstanceBase {
 		})
 
 		this.socket = undefined
+
+		this.cmdPipe = [];
+		this.lastReturnedCommand = undefined;
 
 		this.pollTimer = undefined
 
@@ -66,8 +69,6 @@ class moduleInstance extends InstanceBase {
 			clearInterval(this.pollTimer)
 			delete this.pollTimer
 		}
-
-		//debug('destroy', this.id)
 	}
 
 	async init(config) {
@@ -155,6 +156,8 @@ class moduleInstance extends InstanceBase {
 			})
 
 			this.socket.on('connect', () => {
+				this.cmdPipe = []
+
 				this.initPolling()
 
 				this.updateStatus(InstanceStatus.Ok)
@@ -163,7 +166,7 @@ class moduleInstance extends InstanceBase {
 			this.socket.on('data', (receivebuffer) => {
 				pipeline += receivebuffer.toString('utf8')
 
-				if (pipeline.includes(this.CONTROL_ACK)) { // ACKs are sent when a command is received, no processing is needed
+				if (pipeline.includes(this.CONTROL_ACK)) { // ACKs are sent when a command is received, no processing is needed, we should have one command to one ACK
 					pipeline = '';
 				}
 				else if (pipeline.includes(this.CONTROL_END)) { // Every command ends with CR or an ACK if nothing needed
@@ -181,25 +184,51 @@ class moduleInstance extends InstanceBase {
 					
 					pipeline = '';
 				}
+
+				this.lastReturnedCommand = this.cmdPipeNext()
 			})
 		}
 	}
 
+	cmdPipeNext() {
+		const return_cmd = this.cmdPipe.shift()
+
+		if(this.cmdPipe.length > 0) {
+			let command = this.cmdPipe[0];
+			this.runCommand(command.cmd, command.handshake, command.params);
+		}
+
+		return return_cmd
+	}
+
 	sendCommand(cmd, handshake, params) {
 		if (cmd !== undefined) {
-			if (this.socket !== undefined && this.socket.isConnected) {
-				console.log('sending: ' + this.buildCommand(cmd, handshake, params));
-				this.socket.send(this.buildCommand(cmd, handshake, params))
-				.then((result) => {
-					//console.log('send result: ' + result);
-				})
-				.catch((error) => {
-					//console.log('send error: ' + error);
-				});
-			} else {
-				this.log('error', 'Network error: Connection to Device not opened.')
-				clearInterval(this.pollTimer);
-			}
+			this.cmdPipe.push({
+				cmd: cmd,
+				handshake: handshake,
+				params: params
+			});
+
+			if(this.cmdPipe.length === 1) {
+				this.runCommand(cmd, handshake, params);
+			}			
+		}
+	}
+
+	runCommand(cmd, handshake, params) {
+		if (this.socket !== undefined && this.socket.isConnected) {
+			console.log('sending: ' + this.buildCommand(cmd, handshake, params));
+			this.socket.send(this.buildCommand(cmd, handshake, params))
+			.then((result) => {
+				//console.log('send result: ' + result);
+			})
+			.catch((error) => {
+				//console.log('send error: ' + error);
+			});
+		}
+		else {
+			this.log('error', 'Network error: Connection to Device not opened.')
+			clearInterval(this.pollTimer);
 		}
 	}
 
@@ -229,9 +258,6 @@ class moduleInstance extends InstanceBase {
 		}
 		
 		params = params.split(',');
-
-		//console.log(response);
-		//console.log(params)
 
 		let model = this.MODELS.find((model) => model.id == this.config.model);
 
@@ -294,8 +320,6 @@ class moduleInstance extends InstanceBase {
 					subinputgainlevel_mic_gain_label = subinputgainlevel_inputgaintablemicObj.label;
 				}
 
-				//console.log(params);
-
 				let subinputChannelSettingsObj = {
 					id: subinputChannel,
 					source: params[1].toString(),
@@ -329,41 +353,53 @@ class moduleInstance extends InstanceBase {
 				inputChannel = params[0].toString();
 				let model_inputChannelObj = model.input_channels.find((CHANNEL) => CHANNEL.id == inputChannel);
 
-				let inputgainlevel_inputgaintablemicObj = this.input_gain_table_mic.find((ROW) => ROW.id == params[1].toString());
 				let inputgainlevel_mic_gain = '';
 				let inputgainlevel_mic_gain_label = '';
 
-				if (inputgainlevel_inputgaintablemicObj !== undefined) {
-					inputgainlevel_mic_gain = inputgainlevel_inputgaintablemicObj.id;
-					inputgainlevel_mic_gain_label = inputgainlevel_inputgaintablemicObj.label;
-				}
+				if (params[1]) {
+					let inputgainlevel_inputgaintablemicObj = this.input_gain_table_mic.find((ROW) => ROW.id == params[1].toString());
+					inputgainlevel_mic_gain = params[1];
 
-				let inputgainlevel_inputgaintablelineObj = this.input_gain_table_line.find((ROW) => ROW.id == params[2].toString());
+					if (inputgainlevel_inputgaintablemicObj !== undefined) {
+						inputgainlevel_mic_gain_label = inputgainlevel_inputgaintablemicObj.label;
+					}
+				}				
+
 				let inputgainlevel_line_gain = '';
 				let inputgainlevel_line_gain_label = '';
 
-				if (inputgainlevel_inputgaintablelineObj !== undefined) {
-					inputgainlevel_line_gain = inputgainlevel_inputgaintablelineObj.id;
-					inputgainlevel_line_gain_label = inputgainlevel_inputgaintablelineObj.label;
+				if (params[2]) {
+					let inputgainlevel_inputgaintablelineObj = this.input_gain_table_line.find((ROW) => ROW.id == params[2].toString());
+					inputgainlevel_line_gain = params[2];
+
+					if (inputgainlevel_inputgaintablelineObj !== undefined) {
+						inputgainlevel_line_gain_label = inputgainlevel_inputgaintablelineObj.label;
+					}
 				}
 				
-				let inputgainlevel_levelfadertableObj = this.fader_table.find((ROW) => ROW.id == params[3].toString());
 				let inputgainlevel_level = '';
 				let inputgainlevel_level_label = '';
 
-				if (inputgainlevel_levelfadertableObj !== undefined) {
-					inputgainlevel_level = inputgainlevel_levelfadertableObj.id;
-					inputgainlevel_level_label = inputgainlevel_levelfadertableObj.label;
-				}
+				if (params[3]) {
+					let inputgainlevel_levelfadertableObj = this.fader_table.find((ROW) => ROW.id == params[3].toString());
+					inputgainlevel_level = params[3];
 
-				let inputgainlevel_maxvolfadertableObj = this.fader_table.find((ROW) => ROW.id == params[5].toString());
+					if (inputgainlevel_levelfadertableObj !== undefined) {
+						inputgainlevel_level_label = inputgainlevel_levelfadertableObj.label;
+					}
+				}
+				
 				let inputgainlevel_max_vol = '';
 				let inputgainlevel_max_vol_label = '';
 
-				if (inputgainlevel_maxvolfadertableObj !== undefined) {
-					inputgainlevel_max_vol = inputgainlevel_maxvolfadertableObj.id;
-					inputgainlevel_max_vol_label = inputgainlevel_maxvolfadertableObj.label;
-				}
+				if (params[5]) {
+					let inputgainlevel_maxvolfadertableObj = this.fader_table.find((ROW) => ROW.id == params[5].toString());
+					inputgainlevel_max_vol = params[5];
+
+					if (inputgainlevel_maxvolfadertableObj !== undefined) {
+						inputgainlevel_max_vol_label = inputgainlevel_maxvolfadertableObj.label;
+					}
+				}				
 				
 				let inputGainLevelObj = {
 					id: inputChannel,
@@ -380,17 +416,20 @@ class moduleInstance extends InstanceBase {
 					virtual_mic_gain: 0
 				}
 
-				if (model_inputChannelObj.id == 'atdm-1012') {
+				if (model.id == 'atdm-1012') {
 					inputGainLevelObj.min_vol_enabled = (params[7].toString() == '1' ? true : false);
 
-					let inputgainlevel_minvolfadertableObj = this.fader_table.find((ROW) => ROW.id == params[8].toString());
-					let inputgainlevel_min_vol = '';
-					let inputgainlevel_min_vol_label = '';
+					let inputgainlevel_min_vol = '0';
+					let inputgainlevel_min_vol_label = '-∞';
 
-					if (inputgainlevel_minvolfadertableObj !== undefined) {
-						inputgainlevel_min_vol = inputgainlevel_minvolfadertableObj.id;
-						inputgainlevel_min_vol_label = inputgainlevel_minvolfadertableObj.label;
-					}
+					if (params[8]) {
+						let inputgainlevel_minvolfadertableObj = this.fader_table.find((ROW) => ROW.id == params[8].toString());
+						inputgainlevel_min_vol = params[8];
+
+						if (inputgainlevel_minvolfadertableObj !== undefined) {
+							inputgainlevel_min_vol_label = inputgainlevel_minvolfadertableObj.label;
+						}
+					}					
 
 					inputGainLevelObj.min_vol = inputgainlevel_min_vol;
 					inputGainLevelObj.min_vol_label = inputgainlevel_min_vol_label;
@@ -417,9 +456,12 @@ class moduleInstance extends InstanceBase {
 
 				let notice_inputGainLevelObj = {
 					id: inputChannel,
-					mic_gain: this.input_gain_table_mic.find((ROW) => ROW.id == params[1].toString()).label,
-					line_gain: this.input_gain_table_line.find((ROW) => ROW.id == params[2].toString()).label,
-					level: this.fader_table.find((ROW) => ROW.id == params[3].toString()).label,
+					mic_gain: params[1],
+					mic_gain_label: this.input_gain_table_mic.find((ROW) => ROW.id == params[1].toString()).label,
+					line_gain: params[2],
+					line_gain_label: this.input_gain_table_line.find((ROW) => ROW.id == params[2].toString()).label,
+					level: params[3],
+					level_label: this.fader_table.find((ROW) => ROW.id == params[3].toString()).label,
 					mute: (params[4].toString() == '1' ? true : false)
 				}
 				
@@ -429,8 +471,11 @@ class moduleInstance extends InstanceBase {
 					if (this.DATA.input_gain_levels[i].id == inputChannel) {
 						//update in place
 						this.DATA.input_gain_levels[i].mic_gain = notice_inputGainLevelObj.mic_gain;
+						this.DATA.input_gain_levels[i].mic_gain_label = notice_inputGainLevelObj.mic_gain_label;
 						this.DATA.input_gain_levels[i].line_gain = notice_inputGainLevelObj.line_gain;
+						this.DATA.input_gain_levels[i].line_gain_label = notice_inputGainLevelObj.line_gain_label;
 						this.DATA.input_gain_levels[i].level = notice_inputGainLevelObj.level;
+						this.DATA.input_gain_levels[i].level_label = notice_inputGainLevelObj.level_label;
 						this.DATA.input_gain_levels[i].mute = notice_inputGainLevelObj.mute;
 						found = true;
 						break;
@@ -473,32 +518,41 @@ class moduleInstance extends InstanceBase {
 			case 'g_output_level':
 				outputChannel = params[0].toString();
 
-				let outputlevel_levelfadertableObj = this.fader_table.find((ROW) => ROW.id == params[1].toString());
 				let outputlevel_level = '';
 				let outputlevel_level_label = '';
 
-				if (outputlevel_levelfadertableObj !== undefined) {
-					outputlevel_level = outputlevel_levelfadertableObj.id;
-					outputlevel_level_label = outputlevel_levelfadertableObj.label;
+				if (params[1]) {
+					let outputlevel_levelfadertableObj = this.fader_table.find((ROW) => ROW.id == params[1].toString());
+					outputlevel_level = params[1];
+
+					if (outputlevel_levelfadertableObj !== undefined) {
+						outputlevel_level_label = outputlevel_levelfadertableObj.label;
+					}
 				}
 
-				let outputlevel_maxvolfadertableObj = this.fader_table.find((ROW) => ROW.id == params[3].toString());
 				let outputlevel_maxvol = '';
 				let outputlevel_maxvol_label = '';
+				
+				if (params[3]) {
+					let outputlevel_maxvolfadertableObj = this.fader_table.find((ROW) => ROW.id == params[3].toString());
+					outputlevel_maxvol = params[3];
 
-				if (outputlevel_maxvolfadertableObj !== undefined) {
-					outputlevel_maxvol = outputlevel_maxvolfadertableObj.id;
-					outputlevel_maxvol_label = outputlevel_maxvolfadertableObj.label;
+					if (outputlevel_maxvolfadertableObj !== undefined) {
+						outputlevel_maxvol_label = outputlevel_maxvolfadertableObj.label;
+					}
 				}
 
-				let outputlevel_minvolfadertableObj = this.fader_table.find((ROW) => ROW.id == params[5].toString());
 				let outputlevel_minvol = '';
 				let outputlevel_minvol_label = '';
+				
+				if (params[5]) {
+					let outputlevel_minvolfadertableObj = this.fader_table.find((ROW) => ROW.id == params[5].toString());
+					outputlevel_minvol = params[5];
 
-				if (outputlevel_minvolfadertableObj !== undefined) {
-					outputlevel_minvol = outputlevel_minvolfadertableObj.id;
-					outputlevel_minvol_label = outputlevel_minvolfadertableObj.label;
-				}
+					if (outputlevel_minvolfadertableObj !== undefined) {
+						outputlevel_minvol_label = outputlevel_minvolfadertableObj.label;
+					}
+				}			
 
 				let outputLevelObj = {
 					id: outputChannel,
@@ -532,7 +586,7 @@ class moduleInstance extends InstanceBase {
 				outputChannel = params[0].toString();
 				let notice_outputLevelObj = {
 					id: outputChannel,
-					level: this.fader_table.find((ROW) => ROW.id == params[1].toString()).label
+					level_label: this.fader_table.find((ROW) => ROW.id == params[1].toString()).label
 				}
 
 				found = false;
@@ -540,7 +594,8 @@ class moduleInstance extends InstanceBase {
 				for (let i = 0; i < this.DATA.output_levels.length; i++) {
 					if (this.DATA.output_levels[i].id == outputChannel) {
 						//update in place
-						this.DATA.output_levels[i].level = notice_outputLevelObj.level;
+						this.DATA.output_levels[i].level = params[1];
+						this.DATA.output_levels[i].level_label = notice_outputLevelObj.level_label;
 						found = true;
 						break;
 					}
@@ -624,7 +679,7 @@ class moduleInstance extends InstanceBase {
 
 				break
 			case 'md_open_channel_notice':
-				if (this.config.model == 'atdm-1012') {
+				if (model.id == 'atdm-1012') {
 					inputChannel = params[0].toString();
 
 					let openChannelObj = {
@@ -664,7 +719,7 @@ class moduleInstance extends InstanceBase {
 
 				break;
 			default:
-				console.log('Other:');
+				console.log('Other Response from device:');
 				console.log(response);
 				break;
 		}
@@ -752,4 +807,4 @@ class moduleInstance extends InstanceBase {
 	}
 }
 
-runEntrypoint(moduleInstance, UpgradeScripts)
+runEntrypoint(atdmInstance, UpgradeScripts)

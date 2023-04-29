@@ -83,9 +83,6 @@ module.exports = {
 								+ (event.options.min_volume_enable ? '1' : '0') + ','
 								+ event.options.min_volume_level;
 						}
-
-						//console.log(params)
-
 						this.sendCommand('s_input_gain_level', 'S', params)
 					},
 				}
@@ -127,7 +124,8 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mic_gain', 'increase', event.options.steps))
+						let params = this.buildInputGainParams(event.options.input, 'mic_gain', 'increase', event.options.steps);
+						this.sendCommand('s_input_gain_level', 'S', params)
 					},
 				}
 
@@ -151,7 +149,8 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'mic_gain', 'decrease', event.options.steps))
+						let params = this.buildInputGainParams(event.options.input, 'mic_gain', 'decrease', event.options.steps);
+						this.sendCommand('s_input_gain_level', 'S', params)
 					},
 				}
 
@@ -175,7 +174,8 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'line_gain', 'increase', event.options.steps))
+						let params = this.buildInputGainParams(event.options.input, 'line_gain', 'increase', event.options.steps);
+						this.sendCommand('s_input_gain_level', 'S', params)
 					},
 				}
 
@@ -199,7 +199,8 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'line_gain', 'decrease', event.options.steps))
+						let params = this.buildInputGainParams(event.options.input, 'line_gain', 'decrease', event.options.steps);
+						this.sendCommand('s_input_gain_level', 'S', params)
 					},
 				}
 
@@ -223,7 +224,7 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						let params = this.buildInputGainParams(event.options.input, 'mic_gain', 'increase', event.options.steps);
+						let params = this.buildInputGainParams(event.options.input, 'level', 'increase', event.options.steps);
 						if (model.id == 'atdm-1012') {
 							params = params.split(',');
 							this.sendCommand('sicl', 'S', event.options.input + ',' + params[3]);
@@ -285,7 +286,8 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'max_vol', 'increase', event.options.steps))
+						let params = this.buildInputGainParams(event.options.input, 'max_vol', 'increase', event.options.steps);
+						this.sendCommand('s_input_gain_level', 'S', params)
 					},
 				}
 
@@ -309,7 +311,8 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'max_vol', 'decrease', event.options.steps))
+						let params = this.buildInputGainParams(event.options.input, 'max_vol', 'decrease', event.options.steps);
+						this.sendCommand('s_input_gain_level', 'S', params)
 					},
 				}
 
@@ -332,16 +335,7 @@ module.exports = {
 					],
 					callback: async (event) => {
 						let params = this.buildInputGainParams(event.options.input, 'mute', event.options.mute);
-						console.log('params: ' + params);
-						if (model.id == 'atdm-1012') {
-							params = params.split(',');
-							console.log(params)
-							console.log('**********')
-							this.sendCommand('SICM', 'S', event.options.input + ',' + params[6]);
-						}
-						else {
-							this.sendCommand('s_input_gain_level', 'S', params)
-						}
+						this.sendCommand('s_input_gain_level', 'S', params)
 					},
 				}
 
@@ -366,7 +360,8 @@ module.exports = {
 							}
 						],
 						callback: async (event) => {
-							this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'min_vol', 'increase', event.options.steps))
+							let params = this.buildInputGainParams(event.options.input, 'min_vol', 'increase', event.options.steps);
+							this.sendCommand('s_input_gain_level', 'S', params)
 						},
 					}
 
@@ -390,7 +385,8 @@ module.exports = {
 							}
 						],
 						callback: async (event) => {
-							this.sendCommand('s_input_gain_level', 'S', this.buildInputGainParams(event.options.input, 'min_vol', 'decrease', event.options.steps))
+							let params = this.buildInputGainParams(event.options.input, 'min_vol', 'decrease', event.options.steps);
+							this.sendCommand('s_input_gain_level', 'S', params)
 						},
 					}
 				}
@@ -483,7 +479,8 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_output_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'increase', event.options.steps))
+						let params = this.buildOutputLevelParams(event.options.output, 'level', 'increase', event.options.steps);
+						this.sendCommand('s_output_level', 'S', params)
 					},
 				}
 
@@ -507,7 +504,8 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_output_level', 'S', this.buildOutputLevelParams(event.options.output, 'level', 'decrease', event.options.steps))
+						let params = this.buildOutputLevelParams(event.options.output, 'level', 'decrease', event.options.steps);
+						this.sendCommand('s_output_level', 'S', params)
 					},
 				}
 
@@ -531,7 +529,8 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_output_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'increase', event.options.steps))
+						let params = this.buildOutputLevelParams(event.options.output, 'max_vol', 'increase', event.options.steps);
+						this.sendCommand('s_output_level', 'S', params)
 					},
 				}
 
@@ -555,7 +554,8 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						this.sendCommand('s_output_level', 'S', this.buildOutputLevelParams(event.options.output, 'max_vol', 'decrease', event.options.steps))
+						let params = this.buildOutputLevelParams(event.options.output, 'max_vol', 'decrease', event.options.steps);
+						this.sendCommand('s_output_level', 'S', params)
 					},
 				}
 
@@ -580,7 +580,8 @@ module.exports = {
 							}
 						],
 						callback: async (event) => {
-							this.sendCommand('s_output_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'increase', event.options.steps))
+							let params = this.buildOutputLevelParams(event.options.output, 'min_vol', 'increase', event.options.steps);
+							this.sendCommand('s_output_level', 'S', params)
 						},
 					}
 	
@@ -604,7 +605,8 @@ module.exports = {
 							}
 						],
 						callback: async (event) => {
-							this.sendCommand('s_output_level', 'S', this.buildOutputLevelParams(event.options.output, 'min_vol', 'decrease', event.options.steps))
+							let params = this.buildOutputLevelParams(event.options.output, 'min_vol', 'decrease', event.options.steps);
+							this.sendCommand('s_output_level', 'S', params)
 						},
 					}
 				}
@@ -950,8 +952,6 @@ module.exports = {
 		let dataObj = this.DATA.input_gain_levels.find((CHANNEL) => CHANNEL.id == input);
 
 		if (dataObj) {
-			console.log('dataObj')
-			console.log(dataObj);
 			let index = 0;
 
 			switch (choice) {
@@ -959,7 +959,7 @@ module.exports = {
 					index = constants.input_gain_table_mic.findIndex((GAIN) => GAIN.id == dataObj.mic_gain);
 
 					if (direction == 'increase') {
-						if (index < (constants.input_gain_table_mic.length - steps - 1)) {
+						if (index <= (constants.input_gain_table_mic.length - steps - 1)) {
 							index = index + steps;
 						}
 					}
@@ -976,7 +976,7 @@ module.exports = {
 					index = constants.input_gain_table_line.findIndex((GAIN) => GAIN.id == dataObj.line_gain);
 
 					if (direction == 'increase') {
-						if (index < constants.input_gain_table_line.length - steps - 1) {
+						if (index <= constants.input_gain_table_line.length - steps - 1) {
 							index = index + steps;
 						}
 					}
@@ -993,7 +993,7 @@ module.exports = {
 					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.level);
 
 					if (direction == 'increase') {
-						if (index < (constants.fader_table.length - steps - 1)) {
+						if (index <= (constants.fader_table.length - steps - 1)) {
 							index = index + steps;
 						}
 					}
@@ -1010,7 +1010,7 @@ module.exports = {
 					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.max_vol);
 
 					if (direction == 'increase') {
-						if (index < (constants.fader_table.length - steps - 1)) {
+						if (index <= (constants.fader_table.length - steps - 1)) {
 							index = index + steps;
 						}
 					}
@@ -1031,7 +1031,7 @@ module.exports = {
 					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.min_vol);
 					
 					if (direction == 'increase') {
-						if (index < (constants.fader_table.length - steps - 1)) {
+						if (index <= (constants.fader_table.length - steps - 1)) {
 							index = index + steps;
 						}
 					}
@@ -1081,7 +1081,7 @@ module.exports = {
 					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.level);
 
 					if (direction == 'increase') {
-						if (index < (constants.fader_table.length - steps - 1)) {
+						if (index <= (constants.fader_table.length - steps - 1)) {
 							index = index + steps;
 						}
 					}
@@ -1098,7 +1098,7 @@ module.exports = {
 					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.max_vol);
 
 					if (direction == 'increase') {
-						if (index < (constants.fader_table.length - steps - 1)) {
+						if (index <= (constants.fader_table.length - steps - 1)) {
 							index = index + steps;
 						}
 					}
@@ -1115,7 +1115,7 @@ module.exports = {
 					index = constants.fader_table.findIndex((LEVEL) => LEVEL.id == dataObj.min_vol);
 					
 					if (direction == 'increase') {
-						if (index < (constants.fader_table.length - steps - 1)) {
+						if (index <= (constants.fader_table.length - steps - 1)) {
 							index = index + steps;
 						}
 					}
