@@ -758,37 +758,37 @@ class atdmInstance extends InstanceBase {
 
 					if (model.data_request.includes('input_channel_settings')) {
 						for (let i = 0; i < model.input_channels_request.length; i++) {
-							this.sendCommand('g_input_channel_settings', 'O', `${model.input_channels_request[i].id}`)
+							this.sendCommand('g_input_channel_settings', 'O', model.input_channels_request[i].id)
 						}
 					}
 
 					if (model.data_request.includes('subinput_channel_settings')) {
 						for (let i = 0; i < model.sub_input_channels.length; i++) {
-							this.sendCommand('g_subinput_channel_settings', 'O', `${model.sub_input_channels[i].id}`)
+							this.sendCommand('g_subinput_channel_settings', 'O', model.sub_input_channels[i].id)
 						}
 					}
 
 					if (model.data_request.includes('input_gain_level')) {
 						for (let i = 0; i < model.input_channels.length; i++) {
-							this.sendCommand('g_input_gain_level', 'O', `${model.input_channels[i].id}`)
+							this.sendCommand('g_input_gain_level', 'O', model.input_channels[i].id)
 						}
 					}
 
 					if (model.data_request.includes('output_channel_settings')) {
 						for (let i = 0; i < model.output_channels.length; i++) {
-							this.sendCommand('g_output_channel_settings', 'O', `${model.output_channels[i].id}`)
+							this.sendCommand('g_output_channel_settings', 'O', model.output_channels[i].id)
 						}
 					}
 
 					if (model.data_request.includes('output_level')) {
 						for (let i = 0; i < model.output_channels.length; i++) {
-							this.sendCommand('g_output_level', 'O', `${model.output_channels[i].id}`)
+							this.sendCommand('g_output_level', 'O', model.output_channels[i].id)
 						}
 					}
 
 					if (model.data_request.includes('output_mute')) {
 						for (let i = 0; i < model.output_channels.length; i++) {
-							this.sendCommand('g_output_mute', 'O', `${model.output_channels[i].id}`)
+							this.sendCommand('g_output_mute', 'O', model.output_channels[i].id)
 						}
 					}
 
