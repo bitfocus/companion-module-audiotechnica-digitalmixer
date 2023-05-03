@@ -1066,7 +1066,7 @@ module.exports = {
 		return params;
 	},
 
-	buildOutputLevelParams(output, choice, direction) {
+	buildOutputLevelParams(output, choice, direction, steps=0) {
 		let model = this.MODELS.find((model) => model.id == this.config.model);
 
 		let params = '';
@@ -1138,7 +1138,7 @@ module.exports = {
 			if (model.id == 'atdm-1012') {
 				params += ',' 
 					+ (dataObj.min_vol_enable ? '1' : '0') + ','
-					+ dataObj.min_vol_level;
+					+ dataObj.min_vol;
 			}
 		}
 

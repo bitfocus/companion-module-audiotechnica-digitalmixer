@@ -72,7 +72,6 @@ class atdmInstance extends InstanceBase {
 	}
 
 	async init(config) {
-		this.updateStatus(InstanceStatus.Connecting)
 		this.configUpdated(config)
 	}
 
@@ -129,6 +128,8 @@ class atdmInstance extends InstanceBase {
 	}
 
 	initTCP() {
+		this.updateStatus(InstanceStatus.Connecting)
+
 		let pipeline = ''
 
 		if (this.socket !== undefined) {
@@ -153,6 +154,10 @@ class atdmInstance extends InstanceBase {
 				clearInterval(this.pollTimer);
 				this.socket.destroy()
 				this.socket == null
+
+				if (err.message.toString().indexOf('ECONNRESET') > -1) {
+					setTimeout(initTCP, 10000); //try again in 10 seconds
+				}
 			})
 
 			this.socket.on('connect', () => {
