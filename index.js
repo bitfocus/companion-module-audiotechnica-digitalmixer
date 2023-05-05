@@ -264,6 +264,9 @@ class atdmInstance extends InstanceBase {
 		
 		params = params.split(',');
 
+		console.log('processing response: ' + response);
+		console.log('params: ' + params);
+
 		let model = this.MODELS.find((model) => model.id == this.config.model);
 
 		let inputChannel = '';
@@ -275,25 +278,100 @@ class atdmInstance extends InstanceBase {
 			case 'g_input_channel_settings':
 				inputChannel = params[0].toString();
 
+				let input_source = '';
+				if (params[1]) {
+					input_source = params[1].toString();
+				}
+
+				let input_phantom_power = false;
+				if (params[2]) {
+					input_phantom_power = (params[2].toString() == '1' ? true : false);
+				}
+
+				let input_phase = 'Normal';
+				if (params[3]) {
+					input_phase = (params[3].toString() == '1' ? 'Invert' : 'Normal');
+				}
+
+				let input_lowcut = false;
+				if (params[4]) {
+					input_lowcut = (params[4].toString() == '1' ? true : false);
+				}
+
+				let input_aec = false;
+				if (params[5]) {
+					input_aec = (params[5].toString() == '1' ? true : false);
+				}
+
+				let input_smartmix = false;
+				if (params[6]) {
+					input_smartmix = (params[6].toString() == '1' ? true : false);
+				}
+
+				let input_link = '';
+				if (params[7]) {
+					input_link = (params[7].toString() == '1' ? 'Link' : 'Unlink');
+				}
+
+				let input_channelname = '';
+				if (params[19]) {
+					input_channelname = params[19].toString();
+				}
+
+				let input_color = '';
+				if (params[20]) {
+					input_color = params[20].toString();
+				}
+
+				let input_virtualmicorientation = '';
+				if (params[21]) {
+					input_virtualmicorientation = params[21].toString();
+				}
+
+				let input_virtualmictilt = '';
+				if (params[22]) {
+					input_virtualmictilt = params[22].toString();
+				}
+
+				let input_virtualmicpattern = '';
+				if (params[23]) {
+					input_virtualmicpattern = params[23].toString();
+				}
+
+				let input_fadergroup = '';
+				if (params[25]) {
+					input_fadergroup = params[25].toString();
+				}
+
+				let input_smartmixgroup = '';
+				if (params[26]) {
+					input_smartmixgroup = params[26].toString();
+				}
+
+				let input_mono = false;
+				if (params[27]) {
+					input_mono = (params[27].toString() == '1' ? true : false);
+				}
+
 				let inputChannelSettingsObj = {
 					id: inputChannel,
-					source: params[1].toString(),
-					phantomPower: (params[2].toString() == '1' ? true : false),
-					phase: (params[3].toString() == '1' ? 'Invert' : 'Normal'),
-					lowCut: (params[4].toString() == '1' ? true : false),
-					aec: (params[5].toString() == ' 1' ? true : false),
-					smartMix: (params[6].toString() == '1' ? true : false),
-					link: (params[7].toString() == '1' ? 'Link' : 'Unlink'),
+					source: input_source,
+					phantomPower: input_phantom_power,
+					phase: input_phase,
+					lowCut: input_lowcut,
+					aec: input_aec,
+					smartMix: input_smartmix,
+					link: input_link,
 					//8-18 are reserved
-					channelName: params[19] || '',
-					color: params[20] || '',
-					virtualMicOrientation: params[21] || '',
-					virtualMicTilt: params[22] || '',
-					virtualMicPattern: params[23] || '',
+					channelName: input_channelname,
+					color: input_color,
+					virtualMicOrientation: input_virtualmicorientation,
+					virtualMicTilt: input_virtualmictilt,
+					virtualMicPattern: input_virtualmicpattern,
 					//24 is reserved
-					faderGroup: params[25] || '',
-					smartMixGroup: params[26] || '',
-					mono: (params[27] == '1' ? true : false)
+					faderGroup: input_fadergroup,
+					smartMixGroup: input_smartmixgroup,
+					mono: input_mono
 				}
 
 				found = false;
@@ -316,6 +394,11 @@ class atdmInstance extends InstanceBase {
 			case 'g_subinput_channel_settings':
 				let subinputChannel = params[0].toString();
 
+				let subinput_source = ''
+				if (params[1]) {
+					subinput_source = params[1].toString();
+				}
+
 				let subinputgainlevel_inputgaintablemicObj = this.input_gain_table_mic.find((ROW) => ROW.id == params[2].toString());
 				let subinputgainlevel_mic_gain = '';
 				let subinputgainlevel_mic_gain_label = '';
@@ -325,16 +408,41 @@ class atdmInstance extends InstanceBase {
 					subinputgainlevel_mic_gain_label = subinputgainlevel_inputgaintablemicObj.label;
 				}
 
+				let subinput_lowcut = false;
+				if (params[3]) {
+					subinput_lowcut = (params[3].toString() == '1' ? true : false);
+				}
+
+				let subinput_link = '';
+				if (params[4]) {
+					subinput_link = (params[4].toString() == '1' ? 'Link' : 'Unlink');
+				}
+
+				let subinput_channelname = '';
+				if (params[5]) {
+					subinput_channelname = params[5].toString();
+				}
+
+				let subinput_color = '';
+				if (params[6]) {
+					subinput_color = params[6].toString();
+				}
+
+				let subinput_fadergroup = '';
+				if (params[7]) {
+					subinput_fadergroup = params[7].toString();
+				}
+
 				let subinputChannelSettingsObj = {
 					id: subinputChannel,
-					source: params[1].toString(),
+					source: subinput_source,
 					input_gain: subinputgainlevel_mic_gain,
 					input_gain_label: subinputgainlevel_mic_gain_label,
-					lowCut: (params[3].toString() == '1' ? true : false),
-					link: (params[4].toString() == '1' ? 'Link' : 'Unlink'),
-					channelName: params[5] || '',
-					color: params[6] || '',
-					faderGroup: params[7] || ''
+					lowCut: subinput_lowcut,
+					link: subinput_link,
+					channelName: subinput_channelname,
+					color: subinput_color,
+					faderGroup: subinput_fadergroup
 				}
 
 				found = false;
@@ -393,6 +501,12 @@ class atdmInstance extends InstanceBase {
 						inputgainlevel_level_label = inputgainlevel_levelfadertableObj.label;
 					}
 				}
+
+				let inputgainlevel_max_vol_enabled = false;
+
+				if (params[4]) {
+					inputgainlevel_max_vol_enabled = (params[4].toString() == '1' ? true : false);
+				}
 				
 				let inputgainlevel_max_vol = '';
 				let inputgainlevel_max_vol_label = '';
@@ -404,7 +518,13 @@ class atdmInstance extends InstanceBase {
 					if (inputgainlevel_maxvolfadertableObj !== undefined) {
 						inputgainlevel_max_vol_label = inputgainlevel_maxvolfadertableObj.label;
 					}
-				}				
+				}
+
+				let inputgainlevel_mute = false;
+
+				if (params[6]) {
+					inputgainlevel_mute = (params[6].toString() == '1' ? true : false);
+				}
 				
 				let inputGainLevelObj = {
 					id: inputChannel,
@@ -414,10 +534,10 @@ class atdmInstance extends InstanceBase {
 					line_gain_label: inputgainlevel_line_gain_label,
 					level: inputgainlevel_level,
 					level_label: inputgainlevel_level_label,
-					max_vol_enabled: (params[4].toString() == '1' ? true : false),
+					max_vol_enabled: inputgainlevel_max_vol_enabled,
 					max_vol: inputgainlevel_max_vol,
 					max_vol_label: inputgainlevel_max_vol_label,
-					mute: (params[6].toString() == '1' ? true : false),
+					mute: inputgainlevel_mute,
 					virtual_mic_gain: 0
 				}
 
