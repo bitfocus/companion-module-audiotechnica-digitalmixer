@@ -535,6 +535,11 @@ class atdmInstance extends InstanceBase {
 					}
 				}
 
+				let max_vol_enabled = false;
+				if (params[2]) {
+					max_vol_enabled = (params[2].toString() == '1' ? true : false);
+				}
+
 				let outputlevel_maxvol = '';
 				let outputlevel_maxvol_label = '';
 				
@@ -545,6 +550,11 @@ class atdmInstance extends InstanceBase {
 					if (outputlevel_maxvolfadertableObj !== undefined) {
 						outputlevel_maxvol_label = outputlevel_maxvolfadertableObj.label;
 					}
+				}
+
+				let min_vol_enabled = false;
+				if (params[4]) {
+					min_vol_enabled = (params[4].toString() == '1' ? true : false);
 				}
 
 				let outputlevel_minvol = '';
@@ -563,10 +573,10 @@ class atdmInstance extends InstanceBase {
 					id: outputChannel,
 					level: outputlevel_level,
 					level_label: outputlevel_level_label,
-					max_vol_enabled: (params[2].toString() == '1' ? true : false),
+					max_vol_enabled: max_vol_enabled,
 					max_vol: outputlevel_maxvol,
 					max_vol_label: outputlevel_maxvol_label,
-					min_vol_enabled: (params[4].toString() == '1' ? true : false),
+					min_vol_enabled: min_vol_enabled,
 					min_vol: outputlevel_minvol,
 					min_vol_label: outputlevel_minvol_label
 				}
@@ -588,7 +598,7 @@ class atdmInstance extends InstanceBase {
 				}
 				break
 			case 'md_output_level_notice':
-				outputChannel = params[0].toString();
+				/*outputChannel = params[0].toString();
 				let notice_outputLevelObj = {
 					id: outputChannel,
 					level_label: this.fader_table.find((ROW) => ROW.id == params[1].toString()).label
@@ -609,7 +619,7 @@ class atdmInstance extends InstanceBase {
 				if (!found) {
 					//add to array
 					this.DATA.output_levels.push(notice_outputLevelObj);
-				}
+				}*/
 				break
 			case 'g_output_mute':
 				outputChannel = params[0].toString();
