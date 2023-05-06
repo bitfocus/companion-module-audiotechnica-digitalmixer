@@ -145,7 +145,7 @@ module.exports = {
 					for (let i = 0; i < this.DATA.input_channel_settings.length; i++) {
 					let inputChannelSettingsObj = this.DATA.input_channel_settings[i];
 						let modelChannelObj = model.input_channels.find((CHANNEL) => CHANNEL.id == inputChannelSettingsObj.id);
-							
+						
 						variableObj[`${modelChannelObj.variableId}_source`] = model.input_channel_sources.find((SOURCE) => SOURCE.id == inputChannelSettingsObj.source).label || '';
 						variableObj[`${modelChannelObj.variableId}_phantompower`] = (inputChannelSettingsObj.phantomPower == true ? 'On' : 'Off')
 						variableObj[`${modelChannelObj.variableId}_phase`] = inputChannelSettingsObj.phase;

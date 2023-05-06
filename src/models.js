@@ -48,6 +48,14 @@ module.exports = {
 				{ id: '5', label: 'Input 6'},
 				{ id: '10', label: 'Input ST'},
 			],
+			input_channel_sources: [
+				{ id: '0', label: 'Mic'	},
+				{ id: '1', label: 'Line +4 dBu'	},
+				{ id: '2', label: 'Line 0 dBV' },
+				{ id: '3', label: 'Line -10 dBV' },
+				{ id: '4', label: 'Line -20 dBV' },
+				{ id: '5', label: 'USB' },
+			],
 			output_channels: [
 				{ id: '0', label: 'Output 1', variableId: 'output1'},
 				{ id: '1', label: 'Output 2', variableId: 'output2'},
@@ -132,6 +140,14 @@ module.exports = {
 				{ id: '4', label: 'Input 5', variableId: 'input5'},
 				{ id: '5', label: 'Input 6', variableId: 'input6'},
 				{ id: '10', label: 'Input ST', variableId: 'inputST'},
+			],
+			input_channel_sources: [
+				{ id: '0', label: 'Mic'	},
+				{ id: '1', label: 'Line +4 dBu'	},
+				{ id: '2', label: 'Line 0 dBV' },
+				{ id: '3', label: 'Line -10 dBV' },
+				{ id: '4', label: 'Line -20 dBV' },
+				{ id: '5', label: 'USB' },
 			],
 			output_channels: [
 				{ id: '0', label: 'Output 1', variableId: 'output1'},
