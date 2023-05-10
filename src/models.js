@@ -90,6 +90,16 @@ module.exports = {
 				'output_channel_settings',
 				'output_mute',
 				'level_meter',
+			],
+			colors: [
+				{ id: '0', label: 'Green'},
+				{ id: '1', label: 'Yellow'},
+				{ id: '2', label: 'Brown'},
+				{ id: '3', label: 'Red'},
+				{ id: '4', label: 'Pink'},
+				{ id: '5', label: 'Blue'},
+				{ id: '6', label: 'Gray'},
+				{ id: '7', label: 'Dark Gray'},
 			]
 		},
 
@@ -185,6 +195,16 @@ module.exports = {
 				'preset_number',
 				'partial_preset_number',
 				'level_meter',
+			],
+			colors: [
+				{ id: '0', label: 'Green'},
+				{ id: '1', label: 'Yellow'},
+				{ id: '2', label: 'Brown'},
+				{ id: '3', label: 'Red'},
+				{ id: '4', label: 'Pink'},
+				{ id: '5', label: 'Blue'},
+				{ id: '6', label: 'Gray'},
+				{ id: '7', label: 'Dark Gray'},
 			]
 		},
 
