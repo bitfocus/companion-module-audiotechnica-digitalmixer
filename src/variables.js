@@ -302,6 +302,18 @@ module.exports = {
 		}
 		catch(error) {
 			this.log('error', `Error checking variables: ${error.toString()}`)
+			if (typeof error === 'object') {
+				if (error.message) {
+				  console.log('\nMessage: ' + error.message)
+				}
+				if (error.stack) {
+				  console.log('\nStacktrace:')
+				  console.log('====================')
+				  console.log(error.stack);
+				}
+			  } else {
+				console.log(error);
+			  }
 		}
 	}
 }
