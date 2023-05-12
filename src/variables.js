@@ -154,7 +154,21 @@ module.exports = {
 						variableObj[`${modelChannelObj.variableId}_smartmix`] = (inputChannelSettingsObj.smartMix == true ? 'On' : 'Off');
 						variableObj[`${modelChannelObj.variableId}_link`] = inputChannelSettingsObj.link;
 						variableObj[`${modelChannelObj.variableId}_channelname`] = inputChannelSettingsObj.channelName;
-						variableObj[`${modelChannelObj.variableId}_color`] = model.colors.find((COLOR) => COLOR.id == inputChannelSettingsObj.color).label || '';
+						
+						variableObj[`${modelChannelObj.variableId}_color`] = '';
+
+						if (inputChannelSettingsObj.color) {
+							let modelColorObj = model.colors.find((COLOR) => COLOR.id == inputChannelSettingsObj.color);
+							if (modelColorObj) {
+								variableObj[`${modelChannelObj.variableId}_color`] = modelColorObj.label;
+							}
+							else {
+								if (inputChannelSettingsObj.color) {
+									variableObj[`${modelChannelObj.variableId}_color`] = inputChannelSettingsObj.color;
+								}
+							}
+						}
+						
 						variableObj[`${modelChannelObj.variableId}_virtualmic_orientation`] = inputChannelSettingsObj.virtualMicOrientation;
 						variableObj[`${modelChannelObj.variableId}_virtualmic_tilt`] = inputChannelSettingsObj.virtualMicTilt;
 						variableObj[`${modelChannelObj.variableId}_virtualmic_pattern`] = inputChannelSettingsObj.virtualMicPattern;
