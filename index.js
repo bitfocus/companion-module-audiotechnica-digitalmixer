@@ -37,8 +37,6 @@ class atdmInstance extends InstanceBase {
 
 		this.pollTimer = undefined
 
-		this.DATA = {}
-
 		this.CONTROL_MODELID= '0000';
 		this.CONTROL_UNITNUMBER = '00';
 		this.CONTROL_CONTINUESELECT = 'NC';
@@ -53,7 +51,7 @@ class atdmInstance extends InstanceBase {
 		for (let i = 1; i <= 8; i++) {
 			let obj = {}
 			for (let j = 1; j <=8; j++) {
-				obj[`fader_${j}_level`] = ''
+				obj[`fader_${j}_level`] = 0
 				obj[`fader_${j}_mute`] = false
 			}
 			this.DATA.operator_page.push(obj);
@@ -852,7 +850,14 @@ class atdmInstance extends InstanceBase {
 					this.DATA.open_channels.push({ id: '5', status: (params[5].toString() == '1' ? true : false)}); //input 6			
 				}
 
+			case 'gopl':
+				this.DATA.operator_page[parseInt(params[0].toString()) - 1][`fader_${params[1].toString()}_level`] = parseInt(params[2].toString());
 				break;
+
+			case 'gopm':
+				this.DATA.operator_page[parseInt(params[0].toString()) - 1][`fader_${params[1].toString()}_mute`] = (params[2].toString() == '1' ? true : false);
+				break;
+
 			default:
 				console.log('Other Response from device:');
 				console.log(response);

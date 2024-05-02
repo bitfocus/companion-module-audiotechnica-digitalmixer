@@ -310,6 +310,24 @@ module.exports = {
 						}
 					}
 
+					if (model.variables.includes('gopl')) {
+						for (let i = 0; i < this.DATA.operator_page.length; i++) {
+							let operatorPage = this.DATA.operator_page[i];
+							for (let j = 1; j <=8; j++) {
+								variableObj[`gopl_${i+1}_${j}`] = parseInt(operatorPage[`fader_${j}_level`]);
+							}
+						}
+					}
+
+					if (model.variables.includes('gopm')) {
+						for (let i = 0; i < this.DATA.operator_page.length; i++) {
+							let operatorPage = this.DATA.operator_page[i];
+							for (let j = 1; j <=8; j++) {
+								variableObj[`gopm_${i+1}_${j}`] = parseInt(operatorPage[`fader_${j}_mute`]);
+							}
+						}
+					}
+		
 					this.setVariableValues(variableObj);
 				}
 			}

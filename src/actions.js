@@ -778,7 +778,7 @@ module.exports = {
 			}
 
 			if (model.actions.includes('sopl')) {
-				actions['sopm'] = {
+				actions['sopl'] = {
 					name: 'Change Operator Fader Level',
 					options: [
 						{
@@ -830,6 +830,106 @@ module.exports = {
 								+ event.options.level
 	
 						this.sendCommand('SOPL', 'S', params)
+					},
+				}
+
+				actions['sopl_increase'] = {
+					name: 'Increase Operator Fader Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Operator Page',
+							id: 'page',
+							default: 1,
+							choices: [
+								{ id: 1, label: 'Page 1'},
+								{ id: 2, label: 'Page 2'},
+								{ id: 3, label: 'Page 3'},
+								{ id: 4, label: 'Page 4'},
+								{ id: 5, label: 'Page 5'},
+								{ id: 6, label: 'Page 6'},
+								{ id: 7, label: 'Page 7'},
+								{ id: 8, label: 'Page 8'}
+							]
+						},
+						{
+							type: 'dropdown',
+							label: 'Operator Fader',
+							id: 'fader',
+							default: 1,
+							choices: [
+								{ id: 1, label: 'Fader 1'},
+								{ id: 2, label: 'Fader 2'},
+								{ id: 3, label: 'Fader 3'},
+								{ id: 4, label: 'Fader 4'},
+								{ id: 5, label: 'Fader 5'},
+								{ id: 6, label: 'Fader 6'},
+								{ id: 7, label: 'Fader 7'},
+								{ id: 8, label: 'Fader 8'}
+							]
+						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
+						}
+					],
+					callback: async (event) => {
+						let params = this.buildOperatorLevelParams(event.options.page, event.options.fader, 'increase', event.options.steps);
+						this.sendCommand('SOPL', 'S', params);
+					},
+				}
+
+				actions['sopl_decrease'] = {
+					name: 'Decrease Operator Fader Level',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Operator Page',
+							id: 'page',
+							default: 1,
+							choices: [
+								{ id: 1, label: 'Page 1'},
+								{ id: 2, label: 'Page 2'},
+								{ id: 3, label: 'Page 3'},
+								{ id: 4, label: 'Page 4'},
+								{ id: 5, label: 'Page 5'},
+								{ id: 6, label: 'Page 6'},
+								{ id: 7, label: 'Page 7'},
+								{ id: 8, label: 'Page 8'}
+							]
+						},
+						{
+							type: 'dropdown',
+							label: 'Operator Fader',
+							id: 'fader',
+							default: 1,
+							choices: [
+								{ id: 1, label: 'Fader 1'},
+								{ id: 2, label: 'Fader 2'},
+								{ id: 3, label: 'Fader 3'},
+								{ id: 4, label: 'Fader 4'},
+								{ id: 5, label: 'Fader 5'},
+								{ id: 6, label: 'Fader 6'},
+								{ id: 7, label: 'Fader 7'},
+								{ id: 8, label: 'Fader 8'}
+							]
+						},
+						{
+							type: 'number',
+							id: 'steps',							
+							label: 'Steps',
+							default: 1,
+							min: 1,
+							max: 10
+						}
+					],
+					callback: async (event) => {
+						let params = this.buildOperatorLevelParams(event.options.page, event.options.fader, 'decrease', event.options.steps);
+						this.sendCommand('SOPL', 'S', params);
 					},
 				}
 			}
@@ -1141,6 +1241,20 @@ module.exports = {
 					+ dataObj.min_vol;
 			}
 		}
+
+		return params;
+	},
+
+	buildOperatorLevelParams(page, fader, direction, steps=0) {
+		if(direction != 'increase') {
+			steps = -steps;
+		}
+
+		let newLevel = this.DATA.operator_page[page - 1][`fader_${fader}_level`] += newLevel;
+
+		let params = page + ','
+				+ fader + ','
+				+ newLevel;
 
 		return params;
 	}
