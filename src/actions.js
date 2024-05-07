@@ -823,9 +823,9 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						let params = '';
-	
-						params += event.options.page + ','
+						this.DATA.operator_page[event.options.page - 1][`fader_${event.options.fader}_level`] = event.options.level;
+
+						let params = event.options.page + ','
 								+ event.options.fader + ','
 								+ event.options.level
 	
@@ -1250,7 +1250,7 @@ module.exports = {
 			steps = -steps;
 		}
 
-		let newLevel = this.DATA.operator_page[page - 1][`fader_${fader}_level`] += newLevel;
+		let newLevel = this.DATA.operator_page[page - 1][`fader_${fader}_level`] += steps;
 
 		let params = page + ','
 				+ fader + ','
