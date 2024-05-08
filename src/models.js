@@ -7,7 +7,9 @@ module.exports = {
 				'output_level',
 				'output_mute',
 				'call_preset',
-				'call_partial_preset'
+				'call_partial_preset',
+				'sopl',
+				'sopm'
 			],
 			feedbacks: [
 				'phantompower',
@@ -19,6 +21,7 @@ module.exports = {
 				'output_mute',
 				'output_maxvolume_enabled',
 				'output_minvolume_enabled',
+				'gopm'
 			],
 			variables: [
 				'input_channel_settings',
@@ -29,6 +32,8 @@ module.exports = {
 				'preset_number',
 				'partial_preset_number',
 				'level_meter',
+				'gopl',
+				'gopm'
 			],
 			input_channels: [
 				{ id: '0', label: 'Input 1'},
@@ -90,6 +95,8 @@ module.exports = {
 				'output_channel_settings',
 				'output_mute',
 				'level_meter',
+				'gopl',
+				'gopm'
 			],
 			colors: [
 				{ id: '0', label: 'Green'},
@@ -109,7 +116,9 @@ module.exports = {
 				'output_level',
 				'output_mute',
 				'call_preset',
-				'call_partial_preset'
+				'call_partial_preset',
+				'sopl',
+				'sopm'
 			],
 			feedbacks: [
 				'phantompower',
@@ -121,6 +130,7 @@ module.exports = {
 				'output_mute',
 				'output_maxvolume_enabled',
 				'output_minvolume_enabled',
+				'gopm'
 			],
 			variables: [
 				'input_channel_settings',
@@ -131,7 +141,9 @@ module.exports = {
 				'preset_number',
 				'partial_preset_number',
 				'level_meter',
-				'open_channel_notice'
+				'open_channel_notice',
+				'gopl',
+				'gopm'
 			],
 			input_channels: [
 				{ id: '0', label: 'Input 1', variableId: 'input1'},
@@ -195,6 +207,8 @@ module.exports = {
 				'preset_number',
 				'partial_preset_number',
 				'level_meter',
+				'gopl',
+				'gopm'
 			],
 			colors: [
 				{ id: '0', label: 'Green'},
