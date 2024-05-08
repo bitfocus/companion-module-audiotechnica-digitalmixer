@@ -41,9 +41,13 @@ export class TestAtdmInstance {
 	}
 
     setActionDefinitions(actions){
-        this.actions = actions;
+        this.actionDefinitions = actions;
     }
-    setFeedbackDefinitions(){}
+    
+    setFeedbackDefinitions(feedbacks){
+        this.feedbackDefinitions = feedbacks;
+    }
+
     setVariableDefinitions(){}
     setVariableValues(){}
     setPresetDefinitions(){}

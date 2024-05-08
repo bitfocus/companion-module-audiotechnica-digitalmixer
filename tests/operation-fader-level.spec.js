@@ -15,17 +15,17 @@ describe('sopl action', () => {
     });
 
     test('set fader level', () => {
-        instance.actions['sopl'].callback({ options: { page: 1, fader: 1, level: 55 } });
+        instance.actionDefinitions['sopl'].callback({ options: { page: 1, fader: 1, level: 55 } });
         expect(sendCommandSpy).toHaveBeenCalledWith('SOPL', 'S', '1,1,55');
     });
 
     test('increase fader level', async () => {
-        await instance.actions['sopl_increase'].callback({ options: { page: 1, fader: 1, steps: 1 } });
+        await instance.actionDefinitions['sopl_increase'].callback({ options: { page: 1, fader: 1, steps: 1 } });
         expect(sendCommandSpy).toHaveBeenCalledWith('SOPL', 'S', '1,1,51');
     });
 
     test('decrease fader level', async () => {
-        await instance.actions['sopl_decrease'].callback({ options: { page: 1, fader: 1, steps: 1 } });
+        await instance.actionDefinitions['sopl_decrease'].callback({ options: { page: 1, fader: 1, steps: 1 } });
         expect(sendCommandSpy).toHaveBeenCalledWith('SOPL', 'S', '1,1,49');
     });
 

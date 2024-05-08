@@ -15,13 +15,13 @@ describe('sopm action', () => {
 
     test('set mute', () => {
         instance.DATA.operator_page[0]['fader_1_mute'] = false;
-        instance.actions['sopm'].callback({ options: { page: 1, fader: 1, mute: true } });
+        instance.actionDefinitions['sopm'].callback({ options: { page: 1, fader: 1, mute: true } });
         expect(sendCommandSpy).toHaveBeenCalledWith('SOPM', 'S', '1,1,1');
     });
 
     test('set unmute', () => {
         instance.DATA.operator_page[0]['fader_1_mute'] = true;
-        instance.actions['sopm'].callback({ options: { page: 1, fader: 1, mute: false } });
+        instance.actionDefinitions['sopm'].callback({ options: { page: 1, fader: 1, mute: false } });
         expect(sendCommandSpy).toHaveBeenCalledWith('SOPM', 'S', '1,1,0');
     });
 });
@@ -137,5 +137,26 @@ describe('gopm processResponse', () => {
 
         instance.processResponse('gopm O 0000 00 1,2,0');
         expect(instance.DATA.operator_page[0][`fader_2_mute`]).toBe(false);
+    });
+});
+
+describe('gopm feedback', () => {
+    let instance;
+
+    beforeEach(() => {
+        instance = new TestAtdmInstance();
+        instance.init({
+            model: 'atdm-1012'
+        });
+    });
+
+    test('fader mute', async () => {
+        instance.DATA.operator_page[0][`fader_1_mute`] = true;
+        expect(instance.feedbackDefinitions['gopm'].callback({ options: { page: 1, fader: 1 } })).toBe(true);
+    });
+
+    test('fader unmute', async () => {
+        instance.DATA.operator_page[0][`fader_1_mute`] = false;
+        expect(instance.feedbackDefinitions['gopm'].callback({ options: { page: 1, fader: 1 } })).toBe(false);
     });
 });
