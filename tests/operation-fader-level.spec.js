@@ -31,7 +31,7 @@ describe('sopl action', () => {
 
 });
 
-describe('sopl variable', () => {
+describe('gopl variable', () => {
     let instance;
 
     beforeEach(() => {
@@ -118,7 +118,7 @@ describe('sopl variable', () => {
     });
 });
 
-describe('sopl processResponse', () => {
+describe('gopl processResponse', () => {
     let instance;
 
     beforeEach(() => {
