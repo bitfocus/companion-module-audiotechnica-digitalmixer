@@ -117,3 +117,22 @@ describe('sopl variable', () => {
         });
     });
 });
+
+describe('sopl processResponse', () => {
+    let instance;
+
+    beforeEach(() => {
+        instance = new TestAtdmInstance();
+        instance.init({
+            model: 'atdm-1012'
+        });
+    });
+
+    test('set fader level', async () => {
+        instance.processResponse('gopl O 0000 00 1,1,30');
+        expect(instance.DATA.operator_page[0][`fader_1_level`]).toBe(30);
+
+        instance.processResponse('gopl O 0000 00 1,2,35');
+        expect(instance.DATA.operator_page[0][`fader_2_level`]).toBe(35);
+    });
+});

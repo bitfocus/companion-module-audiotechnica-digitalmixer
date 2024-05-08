@@ -11,6 +11,7 @@ const utils = require('../src/utils');
 
 const models = require('../src/models');
 const constants = require('../src/constants');
+const processResponse = require('../src/process-response');
 
 export class TestAtdmInstance {
     constructor() {
@@ -23,7 +24,8 @@ export class TestAtdmInstance {
 			...internalData,
 			...utils,
 			...models,
-			...constants
+			...constants,
+            ...processResponse
 		});
 
         this.DATA = {};
@@ -31,7 +33,7 @@ export class TestAtdmInstance {
 
     init(config) {
         this.config = config;
-        this.initData();;
+        this.initData();
 		this.initActions();
 		this.initFeedbacks();
 		this.initVariables();

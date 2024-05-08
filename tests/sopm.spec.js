@@ -112,3 +112,30 @@ describe('sopm variable', () => {
         });
     });
 });
+
+describe('sopl processResponse', () => {
+    let instance;
+
+    beforeEach(() => {
+        instance = new TestAtdmInstance();
+        instance.init({
+            model: 'atdm-1012'
+        });
+    });
+
+    test('set fader mute', async () => {
+        instance.processResponse('gopm O 0000 00 1,1,1');
+        expect(instance.DATA.operator_page[0][`fader_1_mute`]).toBe(true);
+
+        instance.processResponse('gopm O 0000 00 1,2,1');
+        expect(instance.DATA.operator_page[0][`fader_2_mute`]).toBe(true);
+    });
+
+    test('set fader unmute', async () => {
+        instance.processResponse('gopm O 0000 00 1,1,0');
+        expect(instance.DATA.operator_page[0][`fader_1_mute`]).toBe(false);
+
+        instance.processResponse('gopm O 0000 00 1,2,0');
+        expect(instance.DATA.operator_page[0][`fader_2_mute`]).toBe(false);
+    });
+});
