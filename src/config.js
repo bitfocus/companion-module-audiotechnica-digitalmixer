@@ -13,10 +13,10 @@ module.exports = {
 			{
 				type: 'textinput',
 				id: 'host',
-				label: 'IP Address',
+				label: 'IP Address / Hostname',
 				width: 6,
 				default: '192.168.0.1',
-				regex: Regex.IP,
+				regex: Regex.IP.slice(0, Regex.IP.length - 1) + '|' + Regex.HOSTNAME.slice(1, Regex.HOSTNAME.length),
 			},
 			{
 				type: 'dropdown',
