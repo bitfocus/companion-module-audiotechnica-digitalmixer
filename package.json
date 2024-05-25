@@ -1,6 +1,6 @@
 {
 	"name": "audiotechnica-digitalmixer",
-	"version": "1.0.5",
+	"version": "1.1.0",
 	"main": "index.js",
 	"scripts": {
 		"test": "vitest"
@@ -11,10 +11,10 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"@companion-module/base": "^1.0.1"
+		"@companion-module/base": "~1.8.0"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^0.5.1",
+		"@companion-module/tools": "^1.5.0",
 		"vitest": "^1.6.0"
 	}
 }
