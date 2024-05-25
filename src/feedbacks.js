@@ -65,12 +65,6 @@ module.exports = {
 								{ id: 7, label: 'Fader 7'},
 								{ id: 8, label: 'Fader 8'}
 							]
-						},
-						{
-							type: 'checkbox',
-							label: 'Mute/Unmute',
-							id: 'mute',
-							default: false
 						}
 					],
 					defaultStyle: {
@@ -79,10 +73,7 @@ module.exports = {
 					},
 					callback: (event) => {
 						let opt = event.options
-						if (this.DATA.operator_page[opt.page][`fader_${opt.fader}_mute`] == true) {
-							return true
-						}
-						return false
+						return (this.DATA.operator_page[opt.page - 1][`fader_${opt.fader}_mute`] == true)
 					},
 				}
 			}
