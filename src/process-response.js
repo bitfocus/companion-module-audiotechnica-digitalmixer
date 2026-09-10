@@ -16,18 +16,23 @@ module.exports = {
             return  p;
         }, {a: ['']}).a
 
-        if (args.length >= 1) {
-            category = args[0].trim().toLowerCase();
+        // A status change notification is prefixed with 'MD' (spec 2.2.6), so everything after it sits one
+        // token further along than it does in an Answer.
+        let offset = 0;
+
+        if (args.length >= 1 && args[0].trim().toUpperCase() === 'MD') {
+            offset = 1;
         }
 
-        if (args.length >= 5) {
-            params = args[4];
+        if (args.length >= offset + 1) {
+            category = args[offset].trim().toLowerCase();
+        }
+
+        if (args.length >= offset + 5) {
+            params = args[offset + 4];
         }
 
         params = params.split(',');
-
-        console.log('processing response: ' + response);
-        console.log('params: ' + params);
 
         let model = this.MODELS.find((model) => model.id == this.config.model);
 
@@ -338,7 +343,8 @@ module.exports = {
                     this.DATA.input_gain_levels.push(inputGainLevelObj);
                 }
                 break
-            case 'md_input_gain_level_notice':
+            case 'input_gain_level_meter_notice':
+            case 'input_gain_level_notice':
                 inputChannel = params[0].toString();
 
                 let notice_inputGainLevelObj = {
@@ -479,20 +485,28 @@ module.exports = {
                     this.DATA.output_levels.push(outputLevelObj);
                 }
                 break
-            case 'md_output_level_notice':
-                /*outputChannel = params[0].toString();
-                let notice_outputLevelObj = {
-                    id: outputChannel,
-                    level_label: this.fader_table.find((ROW) => ROW.id == params[1].toString()).label
+            case 'output_level_notice':
+                outputChannel = params[0].toString();
+
+                let notice_outputLevel = '';
+                let notice_outputLevelLabel = '';
+
+                if (params[1] !== undefined) {
+                    let notice_outputLevelFaderObj = this.fader_table.find((ROW) => ROW.id == params[1].toString());
+                    notice_outputLevel = params[1];
+
+                    if (notice_outputLevelFaderObj !== undefined) {
+                        notice_outputLevelLabel = notice_outputLevelFaderObj.label;
+                    }
                 }
 
                 found = false;
 
                 for (let i = 0; i < this.DATA.output_levels.length; i++) {
                     if (this.DATA.output_levels[i].id == outputChannel) {
-                        //update in place
-                        this.DATA.output_levels[i].level = params[1];
-                        this.DATA.output_levels[i].level_label = notice_outputLevelObj.level_label;
+                        //update in place, the notice only carries the level
+                        this.DATA.output_levels[i].level = notice_outputLevel;
+                        this.DATA.output_levels[i].level_label = notice_outputLevelLabel;
                         found = true;
                         break;
                     }
@@ -500,9 +514,14 @@ module.exports = {
 
                 if (!found) {
                     //add to array
-                    this.DATA.output_levels.push(notice_outputLevelObj);
-                }*/
+                    this.DATA.output_levels.push({
+                        id: outputChannel,
+                        level: notice_outputLevel,
+                        level_label: notice_outputLevelLabel
+                    });
+                }
                 break
+            case 'output_mute_notice':
             case 'g_output_mute':
                 outputChannel = params[0].toString();
                 let outputMuteObj = {
@@ -529,13 +548,13 @@ module.exports = {
             case 'g_preset_number':
                 this.DATA.preset_number = params[0].toString()
                 break;
-            case 'md_recall_preset_notice':
+            case 'recall_preset_notice':
                 this.DATA.preset_number = params[0].toString()
                 break;
             case 'g_partial_preset_number':
                 this.DATA.partial_preset_number = params[0].toString()
                 break;
-            case 'md_recall_partial_preset_notice':
+            case 'recall_partial_preset_notice':
                 this.DATA.partial_preset_number = params[0].toString()
                 break;
             case 'g_level_meter':
@@ -561,21 +580,24 @@ module.exports = {
                     this.DATA.meter_levels.push(meterLevelObj);
                 }
                 break;
-            case 'md_level_meter_notice':
+            case 'level_meter_notice':
+                // Every monitor point is reported at once, in the order given by LEVEL_METER_POINTS.
                 for (let i = 0; i < params.length; i++) {
-                    let notice_monitorPoint = (i+1);
+                    let notice_monitorPoint = i.toString();
+                    let notice_meterLevel = params[i].toString();
 
-                    for (let i = 0; i < this.DATA.meter_levels.length; i++) {
-                        if (this.DATA.meter_levels[i].monitorPoint == notice_monitorPoint) {
-                            //update in place
-                            this.DATA.meter_levels[i] = params[i];
-                            break;
-                        }
+                    let existingMeter = this.DATA.meter_levels.find((METER) => METER.monitorPoint == notice_monitorPoint);
+
+                    if (existingMeter) {
+                        existingMeter.level = notice_meterLevel;
+                    }
+                    else {
+                        this.DATA.meter_levels.push({ monitorPoint: notice_monitorPoint, level: notice_meterLevel });
                     }
                 }
 
                 break
-            case 'md_open_channel_notice':
+            case 'open_channel_notice':
                 if (model.id == 'atdm-1012') {
                     inputChannel = params[0].toString();
 
@@ -614,6 +636,8 @@ module.exports = {
                     this.DATA.open_channels.push({ id: '5', status: (params[5].toString() == '1' ? true : false)}); //input 6
                 }
 
+                break
+
             case 'gopl':
                 this.DATA.operator_page[parseInt(params[0].toString()) - 1][`fader_${params[1].toString()}_level`] = parseInt(params[2].toString());
                 break;
@@ -622,12 +646,108 @@ module.exports = {
                 this.DATA.operator_page[parseInt(params[0].toString()) - 1][`fader_${params[1].toString()}_mute`] = (params[2].toString() == '1' ? true : false);
                 break;
 
+            case 'g_firmware_version':
+                this.DATA.firmware_version = params[0].toString();
+                break;
+
+            case 'g_deviceid':
+                this.DATA.device_id = params[0].toString();
+                break;
+
+            case 'g_name_bank':
+                // Bank names arrive as a divided message, one bank per frame, so each is handled on its own.
+                if (params[0] !== undefined) {
+                    let bankNumber = params[0].toString();
+                    let bankName = params[1] !== undefined ? params[1].toString() : '';
+
+                    let existingBank = this.DATA.preset_names.find((BANK) => BANK.id == bankNumber);
+
+                    if (existingBank) {
+                        existingBank.name = bankName;
+                    }
+                    else {
+                        this.DATA.preset_names.push({ id: bankNumber, name: bankName });
+                    }
+                }
+                break;
+
+            case 'arraymic_mute_notice':
+            case 'g_arraymic_mute':
+                // The ATDM-1012 reports which virtual mic changed, the ATDM-0604 has only one.
+                this.DATA.arraymic_mute = (params[0].toString() == '1' ? true : false);
+
+                if (params[1] !== undefined) {
+                    let virtualMic = params[1].toString();
+                    let existingArrayMic = this.DATA.arraymic_mutes.find((MIC) => MIC.id == virtualMic);
+
+                    if (existingArrayMic) {
+                        existingArrayMic.mute = this.DATA.arraymic_mute;
+                    }
+                    else {
+                        this.DATA.arraymic_mutes.push({ id: virtualMic, mute: this.DATA.arraymic_mute });
+                    }
+                }
+                break;
+
+            case 'operator_channel_notice':
+                // ATDM-1012: fader, level, mute, page. ATDM-0604: fader, level, mute on its single page.
+                let noticeFader = parseInt(params[0].toString());
+                let noticePage = params[3] !== undefined ? parseInt(params[3].toString()) : 1;
+
+                if (this.DATA.operator_page[noticePage - 1] && noticeFader >= 1) {
+                    if (params[1] !== undefined && params[1] !== '') {
+                        this.DATA.operator_page[noticePage - 1][`fader_${noticeFader}_level`] = parseInt(params[1].toString());
+                    }
+
+                    if (params[2] !== undefined && params[2] !== '') {
+                        this.DATA.operator_page[noticePage - 1][`fader_${noticeFader}_mute`] = (params[2].toString() == '1' ? true : false);
+                    }
+                }
+                break;
+
+            case 'cancut_notice':
+                // One value per input channel: on when both Priority and Can Cut are enabled.
+                this.DATA.cancut = [];
+
+                for (let i = 0; i < params.length; i++) {
+                    this.DATA.cancut.push({
+                        id: i.toString(),
+                        status: (params[i].toString() == '1' ? true : false)
+                    });
+                }
+                break;
+
+            case 'rec_status_notice':
+                this.DATA.rec_status = params[0].toString();
+                break;
+
+            case 'fbs_notice':
+                // Sent when howling is detected. Only the channel and whether FBS is engaged are useful
+                // as feedback; the per-band filter values are not surfaced.
+                if (params[0] !== undefined) {
+                    let fbsChannel = params[0].toString();
+                    let fbsObj = {
+                        id: fbsChannel,
+                        processing_type: params[1] !== undefined ? params[1].toString() : '',
+                        enabled: (params[2] !== undefined && params[2].toString() == '1')
+                    };
+
+                    let existingFbs = this.DATA.fbs.findIndex((CHANNEL) => CHANNEL.id == fbsChannel);
+
+                    if (existingFbs > -1) {
+                        this.DATA.fbs[existingFbs] = fbsObj;
+                    }
+                    else {
+                        this.DATA.fbs.push(fbsObj);
+                    }
+                }
+                break;
+
             default:
-                console.log('Other Response from device:');
-                console.log(response);
+                this.log('debug', 'Unhandled response from device: ' + response);
                 break;
         }
 
-        this.checkVariables()
+        this.requestUiUpdate()
     }
 };
