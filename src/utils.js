@@ -26,29 +26,19 @@ module.exports = {
 
 		let errorCode = errorReturn[2];
 
-		let errorType = '';
-
-		switch(errorCode) {
-			case '01': // Grammar error
-				break
-			case '02': // Invalid command
-				break
-			case '03': // Divided Transmission error
-				break
-			case '04': // Parameter error
-				errorType = 'Parameter error';
-				break
-			case '05': // Transmit timeout
-				break
-			case '90': // Busy
-				break
-			case '92': // Busy (Safe Mode)
-				break
-			case '93': // Busy (Extension)
-				break
-			case '99': // Other
-				break
+		// Error codes from the protocol specification, table 2-6.
+		const ERROR_CODES = {
+			'01': 'Syntax error - a required element is missing, malformed, or the message is too long',
+			'02': 'Invalid command - the command does not exist or is not supported by this device',
+			'03': 'Divided message transmission error - a split message was not completed',
+			'04': 'Parameter error - an invalid channel, an out of range value, or a parameter that cannot be changed right now',
+			'90': 'Busy - the device could not process the command',
+			'92': 'Busy - the device is saving settings',
+			'93': 'Busy - the device is in Extension mode',
+			'99': 'Other error',
 		}
+
+		let errorType = ERROR_CODES[errorCode] || `Unknown error code '${errorCode}'`;
 
 		this.log('error', `Error: ${response} Error type: ${errorType}`);
 	}
