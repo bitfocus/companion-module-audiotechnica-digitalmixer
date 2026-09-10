@@ -1136,15 +1136,18 @@ module.exports = {
 			if (model.actions.includes('operator_mute')) {
 				actions['operator_mute'] = {
 					name: 'Mute Web Remote Operator Fader',
-					options: [
+					// Definitions are built per model, so the page selector is simply left out where there is
+					// only one page. isVisible cannot be used for this: it is serialised and must not read
+					// anything from the enclosing scope.
+					options: (model.id == 'atdm-1012' ? [
 						{
 							type: 'dropdown',
 							label: 'Operator Page',
 							id: 'page',
 							default: 1,
-							choices: model.operator_pages || [{ id: 1, label: 'Page 1' }],
-							isVisible: () => model.id == 'atdm-1012'
-						},
+							choices: model.operator_pages
+						}
+					] : []).concat([
 						{
 							type: 'dropdown',
 							label: 'Operator Fader',
@@ -1158,7 +1161,7 @@ module.exports = {
 							id: 'mute',
 							default: false
 						}
-					],
+					]),
 					callback: async (event) => {
 						// The ATDM-1012 has eight operator pages and names the page last; the ATDM-0604 has one.
 						let params = event.options.fader + ',' + (event.options.mute ? '1' : '0')
