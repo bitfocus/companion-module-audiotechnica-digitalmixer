@@ -12,6 +12,7 @@ module.exports = {
 				'save_preset',
 				'bootup_preset',
 				'operator_mute',
+							'aec_calibration',
 			],
 			feedbacks: [
 				'phantompower',
@@ -36,6 +37,7 @@ module.exports = {
 			
 				'device_info',
 				'preset_names',
+							'aec_calibration',
 			],
 			input_channels: [
 				{ id: '0', label: 'Input 1'},
@@ -121,6 +123,7 @@ module.exports = {
 				'save_preset',
 				'bootup_preset',
 				'operator_mute',
+							'aec_calibration',
 			],
 			feedbacks: [
 				'phantompower',
@@ -145,6 +148,7 @@ module.exports = {
 				'open_channel_notice',
 				'device_info',
 				'preset_names',
+							'aec_calibration',
 			],
 			input_channels: [
 				{ id: '0', label: 'Input 1', variableId: 'input1'},
@@ -241,6 +245,8 @@ module.exports = {
 				'ducker',
 				'oscillator',
 							'fbs',
+							'output_12eq_func',
+				'smart_mix_channel',
 			],
 			feedbacks: [
 				'phantompower',

@@ -1361,6 +1361,136 @@ module.exports = {
 				}
 			}
 
+			if (model.actions.includes('aec_calibration')) {
+				actions['aec_calibration'] = {
+					name: 'AEC Calibration',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Action',
+							id: 'action',
+							default: 'test',
+							choices: [
+								{ id: 'test', label: 'Run Test' },
+								{ id: 'start', label: 'Start Measurement' },
+								{ id: 'stop', label: 'Stop Measurement' },
+							]
+						}
+					],
+					callback: async (event) => {
+						// The result arrives later as an aec_calibration_notice.
+						this.sendCommand(`aec_calibration_${event.options.action}`, 'S', '')
+					},
+				}
+			}
+
+			if (model.actions.includes('output_12eq_func')) {
+				actions['output_12eq_func'] = {
+					name: 'Recall or Reset Output EQ',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Output Channel',
+							id: 'output',
+							default: model.output_channels[0].id,
+							choices: model.output_channels
+						},
+						{
+							type: 'dropdown',
+							label: 'Action',
+							id: 'processing_type',
+							default: '1',
+							choices: this.EQ_FUNCTIONS
+						},
+						{
+							type: 'number',
+							label: 'EQ Library Number',
+							id: 'preset',
+							default: 1,
+							min: 1,
+							max: 20,
+							isVisible: (options) => options.processing_type == '1' || options.processing_type == '2'
+						}
+					],
+					callback: async (event) => {
+						// The library number is only read for recall and save.
+						this.sendCommand('s_output_12eq_func', 'S',
+							event.options.output + ',' + event.options.processing_type + ',' + event.options.preset)
+					},
+				}
+			}
+
+			if (model.actions.includes('smart_mix_channel')) {
+				actions['smart_mix_channel'] = {
+					name: 'Set Smart Mix Channel Settings',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Input Channel',
+							id: 'input',
+							default: model.input_channels[0].id,
+							choices: model.input_channels.filter((CHANNEL) => parseInt(CHANNEL.id) <= 9)
+						},
+						{
+							type: 'dropdown',
+							label: 'Smart Mix Group',
+							id: 'group',
+							default: 1,
+							choices: this.SMARTMIX_GROUPS
+						},
+						{
+							type: 'number',
+							label: 'Gain Share Weight (-15.0 to +15.0 dB)',
+							id: 'weight',
+							default: 30,
+							min: 0,
+							max: 60
+						},
+						{
+							type: 'checkbox',
+							label: 'Priority',
+							id: 'priority',
+							default: false
+						},
+						{
+							type: 'checkbox',
+							label: 'Can Cut',
+							id: 'cancut',
+							default: false
+						},
+						{
+							type: 'number',
+							label: 'Closed Mic Attenuation (-60 to 0 dB)',
+							id: 'attenuation',
+							default: 60,
+							min: 0,
+							max: 60
+						},
+						{
+							type: 'number',
+							label: 'Threshold (-10 to +10 dB)',
+							id: 'threshold',
+							default: 10,
+							min: 0,
+							max: 20
+						}
+					],
+					callback: async (event) => {
+						let params = [
+							event.options.input,
+							event.options.group,
+							event.options.weight,
+							event.options.priority ? '1' : '0',
+							event.options.cancut ? '1' : '0',
+							event.options.attenuation,
+							event.options.threshold,
+						]
+
+						this.sendCommand('s_smart_mix', 'S', params.join(','))
+					},
+				}
+			}
+
 		this.setActionDefinitions(actions)
 	},
 

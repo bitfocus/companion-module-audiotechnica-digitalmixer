@@ -105,6 +105,29 @@ describe('system and preset actions', () => {
         expect(call[2]).toBe('21,3,1,1,0,0,0,0,0,0,1');
     });
 
+    test('AEC calibration sends the command for the chosen step', () => {
+        forModel('atdm-0604a');
+        fire('aec_calibration', { action: 'start' });
+        expect(spy).toHaveBeenCalledWith('aec_calibration_start', 'S', '');
+
+        fire('aec_calibration', { action: 'stop' });
+        expect(spy).toHaveBeenCalledWith('aec_calibration_stop', 'S', '');
+    });
+
+    test('output EQ recall sends channel, action and library number', () => {
+        forModel('atdm-1012');
+        fire('output_12eq_func', { output: '9', processing_type: '3', preset: 1 });
+        expect(spy).toHaveBeenCalledWith('s_output_12eq_func', 'S', '9,3,1');
+    });
+
+    test('smart mix channel settings send all seven fields', () => {
+        forModel('atdm-1012');
+        fire('smart_mix_channel', {
+            input: '9', group: 4, weight: 60, priority: true, cancut: true, attenuation: 60, threshold: 20,
+        });
+        expect(spy).toHaveBeenCalledWith('s_smart_mix', 'S', '9,4,60,1,1,60,20');
+    });
+
     test('input mute uses the dedicated command on the ATDM-1012', () => {
         forModel('atdm-1012');
         fire('input_mute', { input: '3', mute: true });

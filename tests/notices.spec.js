@@ -94,6 +94,21 @@ describe('notice parsing', () => {
         expect(instance.DATA.cancut[1]).toEqual({ id: '1', status: true });
     });
 
+    test('AEC calibration result notice is recorded', () => {
+        instance.processResponse('MD aec_calibration_notice 0000 00 NC 3 ');
+
+        expect(instance.DATA.aec_calibration_result).toBe('3');
+    });
+
+    test('level meter notice fills every monitor point in order', () => {
+        const levels = Array.from({ length: 42 }, (_, i) => i);
+        instance.processResponse('MD level_meter_notice 0000 00 NC ' + levels.join(',') + ' ');
+
+        expect(instance.DATA.meter_levels).toHaveLength(42);
+        expect(instance.DATA.meter_levels[0]).toEqual({ monitorPoint: '0', level: '0' });
+        expect(instance.DATA.meter_levels[41]).toEqual({ monitorPoint: '41', level: '41' });
+    });
+
     test('fbs notice records the channel state', () => {
         instance.processResponse('MD fbs_notice 0000 00 NC 0,0,1,0,0,0,0 ');
 

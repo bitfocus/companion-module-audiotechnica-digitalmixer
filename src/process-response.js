@@ -671,6 +671,10 @@ module.exports = {
                 }
                 break;
 
+            case 'aec_calibration_notice':
+                this.DATA.aec_calibration_result = params[0].toString();
+                break;
+
             case 'arraymic_mute_notice':
             case 'g_arraymic_mute':
                 // The ATDM-1012 reports which virtual mic changed, the ATDM-0604 has only one.

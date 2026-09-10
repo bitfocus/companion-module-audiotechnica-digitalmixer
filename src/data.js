@@ -50,6 +50,7 @@ module.exports = {
 		this.DATA.preset_names = [];
 		this.DATA.firmware_version = '';
 		this.DATA.device_id = '';
+		this.DATA.aec_calibration_result = '';
 		this.DATA.arraymic_mute = false;
     },
 

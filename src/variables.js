@@ -124,6 +124,10 @@ module.exports = {
 				variables.push({ variableId: `rec_status`, name: `Recorder Status`})
 			}
 
+			if (model.variables.includes('aec_calibration')) {
+				variables.push({ variableId: `aec_calibration_result`, name: `AEC Calibration Result`})
+			}
+
 			if (model.variables.includes('level_meter')) {
 				let meterPoints = this.LEVEL_METER_POINTS[model.id] || [];
 
@@ -321,6 +325,11 @@ module.exports = {
 				if (model.variables.includes('rec_status')) {
 					let recorderStatusObj = this.RECORDER_STATUS.find((STATUS) => STATUS.id == this.DATA.rec_status);
 					this.setVariableValues({ rec_status: recorderStatusObj ? recorderStatusObj.label : '' });
+				}
+
+				if (model.variables.includes('aec_calibration')) {
+					let aecResultObj = this.AEC_CALIBRATION_RESULTS.find((RESULT) => RESULT.id == this.DATA.aec_calibration_result);
+					this.setVariableValues({ aec_calibration_result: aecResultObj ? aecResultObj.label : '' });
 				}
 
 				if (model.variables.includes('level_meter')) {

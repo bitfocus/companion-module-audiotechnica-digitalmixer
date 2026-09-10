@@ -1490,4 +1490,19 @@ module.exports = {
 		{ id: '3', label: 'Replaying' },
 		{ id: '4', label: 'Replaying Paused' },
 	],
+
+	// 12BandEQFunction processing types, ATDM-1012.
+	EQ_FUNCTIONS: [
+		{ id: '0', label: 'Flat (all band gain 0)' },
+		{ id: '1', label: 'Recall EQ Library' },
+		{ id: '2', label: 'Save to EQ Library' },
+		{ id: '3', label: 'Reset to Default' },
+	],
+
+	AEC_CALIBRATION_RESULTS: [
+		{ id: '0', label: 'Normal' },
+		{ id: '1', label: 'Failed - reverb time over 250 ms' },
+		{ id: '2', label: 'Failed - delay time over 160 ms' },
+		{ id: '3', label: 'Timed out' },
+	],
 }
