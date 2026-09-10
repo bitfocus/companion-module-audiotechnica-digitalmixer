@@ -12,7 +12,8 @@ module.exports = {
 				'save_preset',
 				'bootup_preset',
 				'operator_mute',
-							'aec_calibration',
+				'aec_calibration',
+				'fbs',
 			],
 			feedbacks: [
 				'phantompower',
@@ -37,7 +38,7 @@ module.exports = {
 			
 				'device_info',
 				'preset_names',
-							'aec_calibration',
+				'aec_calibration',
 			],
 			input_channels: [
 				{ id: '0', label: 'Input 1'},
@@ -86,7 +87,7 @@ module.exports = {
 			fbs_processing: [
 				{ id: '0', label: 'Band Setting'},
 				{ id: '1', label: 'Reset'},
-				{ id: '1', label: 'Copy to Output EQ'},
+				{ id: '2', label: 'Copy to Output EQ'},
 			],
 			fbs_bands: [
 				{ id: '0', label: 'Dynamics'},
@@ -123,7 +124,8 @@ module.exports = {
 				'save_preset',
 				'bootup_preset',
 				'operator_mute',
-							'aec_calibration',
+				'aec_calibration',
+				'fbs',
 			],
 			feedbacks: [
 				'phantompower',
@@ -148,7 +150,7 @@ module.exports = {
 				'open_channel_notice',
 				'device_info',
 				'preset_names',
-							'aec_calibration',
+				'aec_calibration',
 			],
 			input_channels: [
 				{ id: '0', label: 'Input 1', variableId: 'input1'},
@@ -197,7 +199,7 @@ module.exports = {
 			fbs_processing: [
 				{ id: '0', label: 'Band Setting'},
 				{ id: '1', label: 'Reset'},
-				{ id: '1', label: 'Copy to Output EQ'},
+				{ id: '2', label: 'Copy to Output EQ'},
 			],
 			fbs_bands: [
 				{ id: '0', label: 'Dynamics'},
@@ -244,8 +246,8 @@ module.exports = {
 				'usb_out',
 				'ducker',
 				'oscillator',
-							'fbs',
-							'output_12eq_func',
+				'fbs',
+				'output_12eq_func',
 				'smart_mix_channel',
 			],
 			feedbacks: [
