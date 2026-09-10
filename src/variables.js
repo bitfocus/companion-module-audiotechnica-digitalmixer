@@ -106,9 +106,29 @@ module.exports = {
 				variables.push({ variableId: `partial_preset_number`, name: `Current Partial Preset Number`})
 			}
 
-			if (model.variables.includes('meter_level')) {
-				for (let i = 0; i <= 41; i++) {
-					variables.push({ variableId: `meterlevel_${i}`, name: `Meter Level ${i}`})
+			if (model.variables.includes('device_info')) {
+				variables.push({ variableId: `firmware_version`, name: `Firmware Version`})
+				variables.push({ variableId: `device_id`, name: `Device ID`})
+			}
+
+			if (model.variables.includes('preset_names')) {
+				for (let i = 0; i < model.preset_choices.length; i++) {
+					variables.push({
+						variableId: `preset_name_${model.preset_choices[i].id}`,
+						name: `${model.preset_choices[i].label} Name`
+					})
+				}
+			}
+
+			if (model.variables.includes('rec_status')) {
+				variables.push({ variableId: `rec_status`, name: `Recorder Status`})
+			}
+
+			if (model.variables.includes('level_meter')) {
+				let meterPoints = this.LEVEL_METER_POINTS[model.id] || [];
+
+				for (let i = 0; i < meterPoints.length; i++) {
+					variables.push({ variableId: `meterlevel_${meterPoints[i].id}`, name: `Meter Level: ${meterPoints[i].label}`})
 				}
 			}
 
@@ -283,7 +303,27 @@ module.exports = {
 					this.setVariableValues(variableObj);
 				}
 
-				if (model.variables.includes('meter_level')) {
+				if (model.variables.includes('device_info')) {
+					this.setVariableValues({
+						firmware_version: this.DATA.firmware_version,
+						device_id: this.DATA.device_id,
+					});
+				}
+
+				if (model.variables.includes('preset_names')) {
+					let variableObj = {};
+					for (let i = 0; i < this.DATA.preset_names.length; i++) {
+						variableObj[`preset_name_${this.DATA.preset_names[i].id}`] = this.DATA.preset_names[i].name;
+					}
+					this.setVariableValues(variableObj);
+				}
+
+				if (model.variables.includes('rec_status')) {
+					let recorderStatusObj = this.RECORDER_STATUS.find((STATUS) => STATUS.id == this.DATA.rec_status);
+					this.setVariableValues({ rec_status: recorderStatusObj ? recorderStatusObj.label : '' });
+				}
+
+				if (model.variables.includes('level_meter')) {
 					let variableObj = {};
 					for (let i = 0; i < this.DATA.meter_levels.length; i++) {
 						let meterLevelObj = this.DATA.meter_levels[i];
@@ -342,18 +382,9 @@ module.exports = {
 		}
 		catch(error) {
 			this.log('error', `Error checking variables: ${error.toString()}`)
-			if (typeof error === 'object') {
-				if (error.message) {
-				  console.log('\nMessage: ' + error.message)
-				}
-				if (error.stack) {
-				  console.log('\nStacktrace:')
-				  console.log('====================')
-				  console.log(error.stack);
-				}
-			  } else {
-				console.log(error);
-			  }
+			if (error instanceof Error && error.stack) {
+				this.log('debug', error.stack)
+			}
 		}
 	}
 }

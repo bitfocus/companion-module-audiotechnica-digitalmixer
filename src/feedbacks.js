@@ -79,7 +79,7 @@ module.exports = {
 			}
 
 			if (model.feedbacks.includes('phantompower')) {
-				feedbacks['phantom_power'] = {
+				feedbacks['phantompower'] = {
 					type: 'boolean',
 					name: 'Phantom Power is On',
 					description: 'Show feedback for Phantom Power State',
@@ -371,6 +371,30 @@ module.exports = {
 						}
 						
 						return false
+					},
+				}
+			}
+
+			if (model.feedbacks.includes('rec_status')) {
+				feedbacks['rec_status'] = {
+					type: 'boolean',
+					name: 'Recorder Status',
+					description: 'Show feedback for the state of the recorder',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Status',
+							id: 'status',
+							default: '1',
+							choices: this.RECORDER_STATUS
+						}
+					],
+					defaultStyle: {
+						color: combineRgb(255, 255, 255),
+						bgcolor: combineRgb(255, 0, 0)
+					},
+					callback: (event) => {
+						return this.DATA.rec_status == event.options.status
 					},
 				}
 			}
