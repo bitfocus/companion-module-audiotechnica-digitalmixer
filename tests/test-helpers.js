@@ -52,4 +52,9 @@ export class TestAtdmInstance {
     setVariableValues(){}
     setPresetDefinitions(){}
     sendCommand(){}
+    checkFeedbacks(){}
+    log(){}
+
+    // The real instance debounces this, so it never runs synchronously from processResponse.
+    requestUiUpdate(){}
 }

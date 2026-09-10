@@ -44,7 +44,7 @@ describe('gopm variable', () => {
 
         instance.checkVariables();
 
-        expect(spy).toHaveBeenNthCalledWith(11, {
+        expect(spy).toHaveBeenCalledWith({
             "gopm_1_1": "On",
             "gopm_1_2": "Off",
             "gopm_1_3": "On",

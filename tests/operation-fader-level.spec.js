@@ -49,7 +49,7 @@ describe('gopl variable', () => {
 
         instance.checkVariables();
 
-        expect(spy).toHaveBeenNthCalledWith(10, {
+        expect(spy).toHaveBeenCalledWith({
             "gopl_1_1": 50,
             "gopl_1_2": 82,
             "gopl_1_3": 20,

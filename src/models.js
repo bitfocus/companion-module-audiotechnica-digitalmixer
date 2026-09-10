@@ -7,7 +7,11 @@ module.exports = {
 				'output_level',
 				'output_mute',
 				'call_preset',
-				'call_partial_preset'
+				'call_partial_preset',
+				'identify',
+				'save_preset',
+				'bootup_preset',
+				'operator_mute',
 			],
 			feedbacks: [
 				'phantompower',
@@ -29,6 +33,9 @@ module.exports = {
 				'preset_number',
 				'partial_preset_number',
 				'level_meter',
+			
+				'device_info',
+				'preset_names',
 			],
 			input_channels: [
 				{ id: '0', label: 'Input 1'},
@@ -109,7 +116,11 @@ module.exports = {
 				'output_level',
 				'output_mute',
 				'call_preset',
-				'call_partial_preset'
+				'call_partial_preset',
+				'identify',
+				'save_preset',
+				'bootup_preset',
+				'operator_mute',
 			],
 			feedbacks: [
 				'phantompower',
@@ -131,7 +142,9 @@ module.exports = {
 				'preset_number',
 				'partial_preset_number',
 				'level_meter',
-				'open_channel_notice'
+				'open_channel_notice',
+				'device_info',
+				'preset_names',
 			],
 			input_channels: [
 				{ id: '0', label: 'Input 1', variableId: 'input1'},
@@ -208,7 +221,7 @@ module.exports = {
 			]
 		},
 
-		{ id: 'atdm-1012',  label: 'ATDM-1012',
+		{ id: 'atdm-1012',  label: 'ATDM-1012 / ATDM-1012DAN',
 			actions: [
 				'input_gain_level',
 				'output_level',
@@ -216,7 +229,18 @@ module.exports = {
 				'call_preset',
 				'call_partial_preset',
 				'sopl',
-				'sopm'
+				'sopm',
+				'identify',
+				'save_preset',
+				'bootup_preset',
+				'front_panel',
+				'operator_mute',
+				'smartmix_mode',
+				'open_mic_limit',
+				'usb_out',
+				'ducker',
+				'oscillator',
+							'fbs',
 			],
 			feedbacks: [
 				'phantompower',
@@ -228,7 +252,8 @@ module.exports = {
 				'output_mute',
 				'output_maxvolume_enabled',
 				'output_minvolume_enabled',
-				'gopm'
+				'gopm',
+				'rec_status',
 			],
 			variables: [
 				'input_channel_settings',
@@ -242,7 +267,10 @@ module.exports = {
 				'level_meter',
 				'open_channel_notice',
 				'gopl',
-				'gopm'
+				'gopm',
+				'device_info',
+				'preset_names',
+				'rec_status',
 			],
 			input_channels: [
 				{ id: '0', label: 'Input 1', variableId: 'input01'},
@@ -384,6 +412,31 @@ module.exports = {
 			fbs_bands: [
 				{ id: '0', label: 'Off'},
 				{ id: '1', label: 'On (static)'},
+			],
+						usb_out_sources: [
+				{ id: '0', label: 'Off'},
+				{ id: '1', label: 'Bus 1'},
+				{ id: '2', label: 'Bus 2'},
+				{ id: '3', label: 'Bus 3'},
+				{ id: '4', label: 'Bus 4'},
+				{ id: '5', label: 'Bus 5'},
+				{ id: '6', label: 'Bus 6'},
+				{ id: '7', label: 'Bus 7'},
+				{ id: '8', label: 'Bus 8'},
+				{ id: '9', label: 'Bus 9'},
+				{ id: '10', label: 'Bus 10'},
+				{ id: '11', label: 'Bus 11'},
+				{ id: '12', label: 'Bus 12'},
+			],
+			operator_pages: [
+				{ id: 1, label: 'Page 1'},
+				{ id: 2, label: 'Page 2'},
+				{ id: 3, label: 'Page 3'},
+				{ id: 4, label: 'Page 4'},
+				{ id: 5, label: 'Page 5'},
+				{ id: 6, label: 'Page 6'},
+				{ id: 7, label: 'Page 7'},
+				{ id: 8, label: 'Page 8'},
 			],
 			data_request: [
 				'input_channel_settings',

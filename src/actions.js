@@ -227,7 +227,7 @@ module.exports = {
 						let params = this.buildInputGainParams(event.options.input, 'level', 'increase', event.options.steps);
 						if (model.id == 'atdm-1012') {
 							params = params.split(',');
-							this.sendCommand('sicl', 'S', event.options.input + ',' + params[3]);
+							this.sendCommand('SICL', 'S', event.options.input + ',' + params[3]);
 						}
 						else {
 							this.sendCommand('s_input_gain_level', 'S', params)
@@ -258,7 +258,7 @@ module.exports = {
 						let params = this.buildInputGainParams(event.options.input, 'level', 'decrease', event.options.steps);
 						if (model.id == 'atdm-1012') {
 							params = params.split(',');
-							this.sendCommand('sicl', 'S', event.options.input + ',' + params[3]);
+							this.sendCommand('SICL', 'S', event.options.input + ',' + params[3]);
 						}
 						else {
 							this.sendCommand('s_input_gain_level', 'S', params)
@@ -334,8 +334,17 @@ module.exports = {
 						}
 					],
 					callback: async (event) => {
-						let params = this.buildInputGainParams(event.options.input, 'mute', event.options.mute);
-						this.sendCommand('s_input_gain_level', 'S', params)
+						if (model.id == 'atdm-1012') {
+							// The ATDM-1012 has a dedicated mute command; s_input_gain_level would resend
+							// the channel's gain and level alongside it.
+							this.sendCommand('SICM', 'S', event.options.input + ',' + (event.options.mute ? '1' : '0'))
+						}
+						else {
+							let params = this.buildInputGainParams(event.options.input, 'mute', event.options.mute);
+							this.sendCommand('s_input_gain_level', 'S', params)
+						}
+
+						this.setInputMuteState(event.options.input, event.options.mute == true)
 					},
 				}
 
@@ -637,6 +646,7 @@ module.exports = {
 								+ (event.options.mute ? '1' : '0')
 	
 						this.sendCommand('s_output_mute', 'S', params)
+						this.setOutputMuteState(event.options.output, event.options.mute == true)
 					},
 				}
 			}
@@ -710,14 +720,14 @@ module.exports = {
 						{
 							type: 'dropdown',
 							label: 'Band 7',
-							id: 'band1',
+							id: 'band7',
 							default: model.fbs_bands[0].id,
 							choices: model.fbs_bands
 						},
 						{
 							type: 'dropdown',
 							label: 'Band 8',
-							id: 'band1',
+							id: 'band8',
 							default: model.fbs_bands[0].id,
 							choices: model.fbs_bands
 						},
@@ -737,7 +747,7 @@ module.exports = {
 								+ event.options.band7 + ','
 								+ event.options.band8
 	
-						this.sendCommand('s_output_mute', 'S', params)
+						this.sendCommand('s_fbs', 'S', params)
 					},
 				}
 			}
@@ -773,6 +783,7 @@ module.exports = {
 						params += event.options.mute + ',' + event.options.mic
 	
 						this.sendCommand('s_arraymic_mute', 'S', params)
+						this.setArrayMicMuteState(event.options.mute == '1')
 					},
 				}
 			}
@@ -985,6 +996,7 @@ module.exports = {
 								+ (event.options.mute ? '1' : '0')
 	
 						this.sendCommand('SOPM', 'S', params)
+						this.setOperatorFaderMuteState(event.options.page, event.options.fader, event.options.mute == true)
 					},
 				}
 			}
@@ -1041,6 +1053,314 @@ module.exports = {
 			
 		}
 			
+			if (model.actions.includes('identify')) {
+				actions['identify'] = {
+					name: 'Identify (Blink Front Panel LEDs)',
+					options: [],
+					callback: async () => {
+						this.sendCommand('identify', 'S', '')
+					},
+				}
+			}
+
+			if (model.actions.includes('save_preset')) {
+				actions['save_preset'] = {
+					name: 'Save Current Settings to Preset',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Preset/Bank Number',
+							id: 'preset',
+							default: model.preset_choices[0].id,
+							choices: model.preset_choices
+						},
+					],
+					callback: async (event) => {
+						// The ATDM-1012 names this one differently to the ATDM-0604.
+						this.sendCommand(model.id == 'atdm-1012' ? 'REGIP' : 'save_preset', 'S', `${event.options.preset}`)
+					},
+				}
+			}
+
+			if (model.actions.includes('bootup_preset')) {
+				actions['bootup_preset'] = {
+					name: 'Set Boot Up Preset',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Preset/Bank Number',
+							id: 'preset',
+							default: 0,
+							choices: [{ id: 0, label: 'None' }].concat(model.preset_choices)
+						},
+					],
+					callback: async (event) => {
+						this.sendCommand('s_bootup_preset', 'S', `${event.options.preset}`)
+					},
+				}
+			}
+
+			if (model.actions.includes('front_panel')) {
+				actions['front_panel'] = {
+					name: 'Set Front Panel Restrictions',
+					options: [
+						{
+							type: 'checkbox',
+							label: 'Allow Preset Recall',
+							id: 'recall_preset',
+							default: true
+						},
+						{
+							type: 'checkbox',
+							label: 'LED Dimmer',
+							id: 'led_dimmer',
+							default: false
+						},
+						{
+							type: 'checkbox',
+							label: 'Show Errors',
+							id: 'error_notice',
+							default: true
+						}
+					],
+					callback: async (event) => {
+						let params = (event.options.recall_preset ? '1' : '0') + ','
+								+ (event.options.led_dimmer ? '1' : '0') + ','
+								+ (event.options.error_notice ? '1' : '0')
+
+						this.sendCommand('s_front_panel_limit', 'S', params)
+					},
+				}
+			}
+
+			if (model.actions.includes('operator_mute')) {
+				actions['operator_mute'] = {
+					name: 'Mute Web Remote Operator Fader',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Operator Page',
+							id: 'page',
+							default: 1,
+							choices: model.operator_pages || [{ id: 1, label: 'Page 1' }],
+							isVisible: () => model.id == 'atdm-1012'
+						},
+						{
+							type: 'dropdown',
+							label: 'Operator Fader',
+							id: 'fader',
+							default: 1,
+							choices: this.OPERATOR_FADERS
+						},
+						{
+							type: 'checkbox',
+							label: 'Mute/Unmute',
+							id: 'mute',
+							default: false
+						}
+					],
+					callback: async (event) => {
+						// The ATDM-1012 has eight operator pages and names the page last; the ATDM-0604 has one.
+						let params = event.options.fader + ',' + (event.options.mute ? '1' : '0')
+
+						if (model.id == 'atdm-1012') {
+							params += ',' + event.options.page
+						}
+
+						this.sendCommand('s_operator_mute', 'S', params)
+					},
+				}
+			}
+
+			if (model.actions.includes('smartmix_mode')) {
+				actions['smartmix_mode'] = {
+					name: 'Set Smart Mix Mode',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Smart Mix Group',
+							id: 'group',
+							default: 1,
+							choices: this.SMARTMIX_GROUPS
+						},
+						{
+							type: 'dropdown',
+							label: 'Mode',
+							id: 'mode',
+							default: '0',
+							choices: this.SMARTMIX_MODES
+						}
+					],
+					callback: async (event) => {
+						this.sendCommand('SSMM', 'S', event.options.group + ',' + event.options.mode)
+					},
+				}
+			}
+
+			if (model.actions.includes('open_mic_limit')) {
+				actions['open_mic_limit'] = {
+					name: 'Set Number of Open Mics',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Smart Mix Group',
+							id: 'group',
+							default: 1,
+							choices: this.SMARTMIX_GROUPS
+						},
+						{
+							type: 'number',
+							label: 'Number of Open Mics',
+							id: 'nom',
+							default: 6,
+							min: 1,
+							max: 10
+						}
+					],
+					callback: async (event) => {
+						this.sendCommand('NOOM', 'S', event.options.group + ',' + event.options.nom)
+					},
+				}
+			}
+
+			if (model.actions.includes('usb_out')) {
+				actions['usb_out'] = {
+					name: 'Set USB Output',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'USB 1 Source',
+							id: 'usb1',
+							default: '0',
+							choices: model.usb_out_sources
+						},
+						{
+							type: 'dropdown',
+							label: 'USB 2 Source',
+							id: 'usb2',
+							default: '0',
+							choices: model.usb_out_sources
+						},
+						{
+							type: 'dropdown',
+							label: 'Send Level',
+							id: 'level',
+							default: '411',
+							choices: this.fader_table.filter((ROW) => ROW.id <= 411)
+						}
+					],
+					callback: async (event) => {
+						this.sendCommand('s_usb_out', 'S',
+							event.options.usb1 + ',' + event.options.usb2 + ',' + event.options.level)
+					},
+				}
+			}
+
+			if (model.actions.includes('ducker')) {
+				actions['ducker'] = {
+					name: 'Set Ducker',
+					options: [
+						{
+							type: 'dropdown',
+							label: 'Channel',
+							id: 'channel',
+							default: '0',
+							choices: this.DUCKER_CHANNELS
+						},
+						{
+							type: 'checkbox',
+							label: 'Enable',
+							id: 'enable',
+							default: false
+						},
+						{
+							type: 'dropdown',
+							label: 'Trigger Bus',
+							id: 'trigger',
+							default: '1',
+							choices: this.DUCKER_TRIGGERS
+						}
+					],
+					callback: async (event) => {
+						// All four channel pairs are sent together, so keep the ones we are not changing.
+						let existing = this.DATA.ducker || [];
+						let params = [];
+
+						for (let i = 0; i < this.DUCKER_CHANNELS.length; i++) {
+							let channel = this.DUCKER_CHANNELS[i].id;
+							let current = existing.find((CHANNEL) => CHANNEL.id == channel) || { enabled: false, trigger: '1' };
+
+							if (channel == event.options.channel) {
+								params.push(event.options.enable ? '1' : '0', `${event.options.trigger}`);
+							}
+							else {
+								params.push(current.enabled ? '1' : '0', `${current.trigger}`);
+							}
+						}
+
+						this.sendCommand('s_ducker_general', 'S', params.join(','))
+					},
+				}
+			}
+
+			if (model.actions.includes('oscillator')) {
+				actions['oscillator'] = {
+					name: 'Set Oscillator (Test Tone)',
+					options: [
+						{
+							type: 'checkbox',
+							label: 'Enable',
+							id: 'enable',
+							default: false
+						},
+						{
+							type: 'dropdown',
+							label: 'Source',
+							id: 'source',
+							default: '0',
+							choices: this.OSCILLATOR_SOURCES
+						},
+						{
+							type: 'dropdown',
+							label: 'Frequency',
+							id: 'frequency',
+							default: '1',
+							choices: this.OSCILLATOR_FREQUENCIES
+						},
+						{
+							type: 'dropdown',
+							label: 'Level',
+							id: 'level',
+							default: '0',
+							choices: this.fader_table.filter((ROW) => ROW.id <= 121)
+						},
+						{
+							type: 'multidropdown',
+							label: 'Assign To Outputs',
+							id: 'assign',
+							default: [],
+							choices: model.output_channels
+						}
+					],
+					callback: async (event) => {
+						let assigned = event.options.assign || [];
+
+						let params = [
+							event.options.enable ? '1' : '0',
+							event.options.source,
+							event.options.frequency,
+							event.options.level,
+						];
+
+						for (let i = 0; i < model.output_channels.length; i++) {
+							params.push(assigned.includes(model.output_channels[i].id) ? '1' : '0');
+						}
+
+						this.sendCommand('s_oscillator', 'S', params.join(','))
+					},
+				}
+			}
+
 		this.setActionDefinitions(actions)
 	},
 
