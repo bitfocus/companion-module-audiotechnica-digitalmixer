@@ -7,7 +7,8 @@ module.exports = {
 				'output_level',
 				'output_mute',
 				'call_preset',
-				'call_partial_preset'
+				'call_partial_preset',
+				'fbs'
 			],
 			feedbacks: [
 				'phantompower',
@@ -77,7 +78,7 @@ module.exports = {
 			fbs_processing: [
 				{ id: '0', label: 'Band Setting'},
 				{ id: '1', label: 'Reset'},
-				{ id: '1', label: 'Copy to Output EQ'},
+				{ id: '2', label: 'Copy to Output EQ'},
 			],
 			fbs_bands: [
 				{ id: '0', label: 'Dynamics'},
@@ -109,7 +110,8 @@ module.exports = {
 				'output_level',
 				'output_mute',
 				'call_preset',
-				'call_partial_preset'
+				'call_partial_preset',
+				'fbs'
 			],
 			feedbacks: [
 				'phantompower',
@@ -173,18 +175,25 @@ module.exports = {
 					{ id: 6, label: 'Preset 6'}
 			],
 			fbs_channels: [
-				{ id: '0', label: 'Output 1'},
-				{ id: '1', label: 'Output 2'},
-				{ id: '10', label: 'Output ST'},
+				{ id: '0', label: 'Input 1'},
+				{ id: '1', label: 'Input 2'},
+				{ id: '2', label: 'Input 3'},
+				{ id: '3', label: 'Input 4'},
+				{ id: '4', label: 'Input 5'},
+				{ id: '5', label: 'Input 6'},
+				{ id: '12', label: 'Output 1'},
+				{ id: '13', label: 'Output 2'},
+				{ id: '20', label: 'Output ST'},
 			],
 			fbs_processing: [
-				{ id: '0', label: 'Band Setting'},
-				{ id: '1', label: 'Reset'},
-				{ id: '1', label: 'Copy to Output EQ'},
+				{ id: '0', label: 'Reset'},
+				{ id: '1', label: 'All Static'},
+				{ id: '2', label: 'Copy to EQ'},
+				{ id: '3', label: 'Band Setting'},
 			],
 			fbs_bands: [
-				{ id: '0', label: 'Dynamics'},
-				{ id: '2', label: 'Statics'},
+				{ id: '0', label: 'Off'},
+				{ id: '1', label: 'On (static)'},
 			],
 			data_request: [
 				'input_channel_settings',
@@ -216,7 +225,8 @@ module.exports = {
 				'call_preset',
 				'call_partial_preset',
 				'sopl',
-				'sopm'
+				'sopm',
+				'fbs'
 			],
 			feedbacks: [
 				'phantompower',

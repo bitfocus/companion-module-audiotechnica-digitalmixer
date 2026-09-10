@@ -710,14 +710,14 @@ module.exports = {
 						{
 							type: 'dropdown',
 							label: 'Band 7',
-							id: 'band1',
+							id: 'band7',
 							default: model.fbs_bands[0].id,
 							choices: model.fbs_bands
 						},
 						{
 							type: 'dropdown',
 							label: 'Band 8',
-							id: 'band1',
+							id: 'band8',
 							default: model.fbs_bands[0].id,
 							choices: model.fbs_bands
 						},
@@ -737,7 +737,7 @@ module.exports = {
 								+ event.options.band7 + ','
 								+ event.options.band8
 	
-						this.sendCommand('s_output_mute', 'S', params)
+						this.sendCommand('s_fbs', 'S', params)
 					},
 				}
 			}
