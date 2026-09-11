@@ -1,8 +1,10 @@
 {
+	"$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
+	"type": "connection",
 	"id": "audiotechnica-digitalmixer",
 	"name": "audiotechnica-digitalmixer",
 	"shortname": "atdm",
-	"description": "Controls Audio Technical Digital Mixers",
+	"description": "Controls Audio-Technica digital mixers",
 	"version": "1.3.0",
 	"license": "MIT",
 	"repository": "git+https://github.com/bitfocus/companion-module-audiotechnica-digitalmixer.git",

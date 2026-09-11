@@ -49,26 +49,25 @@ jobs:
         env:
           CI: true
 
-  # Uncomment this to enable running unit tests
-  # test:
-  #   name: Test
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 15
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
 
-  #   steps:
-  #     - uses: actions/checkout@v7
-  #     - name: Use Node.js 22.x
-  #       uses: actions/setup-node@v6
-  #       with:
-  #         node-version: 22.x
-  #     - name: Prepare Environment
-  #       run: |
-  #         corepack enable
-  #         yarn install
-  #       env:
-  #         CI: true
-  #     - name: Run tests
-  #       run: |
-  #         yarn test
-  #       env:
-  #         CI: true
+    steps:
+      - uses: actions/checkout@v7
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.x
+      - name: Prepare Environment
+        run: |
+          corepack enable
+          yarn install
+        env:
+          CI: true
+      - name: Run tests
+        run: |
+          yarn test
+        env:
+          CI: true
