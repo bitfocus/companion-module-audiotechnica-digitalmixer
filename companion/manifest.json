@@ -1,4 +1,5 @@
 {
+	"type": "connection",
 	"id": "audiotechnica-digitalmixer",
 	"name": "audiotechnica-digitalmixer",
 	"shortname": "atdm",
