@@ -126,6 +126,28 @@ describe('system and preset actions', () => {
 		expect(h.sent).toContainEqual(['s_smart_mix', 'S', '9,4,60,1,1,60,20'])
 	})
 
+	// The mixer takes raw steps, not decibels. Its own interface shows the decibel figure, so the
+	// dropdowns label each step with it - picking 0.0 dB has to send 30, not 0.
+	test('smart mix weight, attenuation and threshold are labelled in decibels', () => {
+		const options = makeInstance('atdm-1012').actions['smart_mix_channel'].options
+		const choicesFor = (id: string) => options.find((o: any) => o.id === id).choices
+
+		expect(choicesFor('weight')).toHaveLength(61)
+		expect(choicesFor('weight')[0]).toEqual({ id: 0, label: '-15.0 dB' })
+		expect(choicesFor('weight')[30]).toEqual({ id: 30, label: '0.0 dB' })
+		expect(choicesFor('weight')[60]).toEqual({ id: 60, label: '+15.0 dB' })
+
+		expect(choicesFor('attenuation')).toHaveLength(61)
+		expect(choicesFor('attenuation')[0]).toEqual({ id: 0, label: '-60 dB' })
+		expect(choicesFor('attenuation')[20]).toEqual({ id: 20, label: '-40 dB' })
+		expect(choicesFor('attenuation')[60]).toEqual({ id: 60, label: '0 dB' })
+
+		expect(choicesFor('threshold')).toHaveLength(21)
+		expect(choicesFor('threshold')[0]).toEqual({ id: 0, label: '-10 dB' })
+		expect(choicesFor('threshold')[10]).toEqual({ id: 10, label: '0 dB' })
+		expect(choicesFor('threshold')[20]).toEqual({ id: 20, label: '+10 dB' })
+	})
+
 	test('input mute uses the dedicated command on the ATDM-1012', () => {
 		const h = makeInstance('atdm-1012')
 		h.fireAction('input_mute', { input: '3', mute: true })

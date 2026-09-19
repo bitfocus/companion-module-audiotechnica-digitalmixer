@@ -53,7 +53,7 @@ until the next poll.
 * Set Feedback Suppressor (ATDM-1012)
 * Set Ducker, USB Output and Oscillator test tone (ATDM-1012)
 * Recall, save, flatten or reset an Output EQ library (ATDM-1012)
-* Set Smart Mix channel settings - weight, priority, can cut, attenuation (ATDM-1012)
+* Set Smart Mix channel settings - gain share weight, priority, can cut, closed mic attenuation, threshold (ATDM-1012)
 * Run AEC Calibration (ATDM-0604, ATDM-0604a)
 
 **Available Feedbacks:**
