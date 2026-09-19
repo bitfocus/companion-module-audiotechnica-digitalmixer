@@ -4,6 +4,8 @@ import {
 	DUCKER_CHANNELS,
 	DUCKER_TRIGGERS,
 	EQ_FUNCTIONS,
+	FRONT_PANEL_FUNCTIONS,
+	FRONT_PANEL_TARGETS,
 	OPERATOR_FADERS,
 	OSCILLATOR_FREQUENCIES,
 	OSCILLATOR_SOURCES,
@@ -71,6 +73,15 @@ export type ActionsSchema = {
 			recall_preset: boolean
 			led_dimmer: boolean
 			error_notice: boolean
+		}
+	}
+	front_panel_limit: {
+		options: {
+			function: string | number
+			target: string | number
+			input: string | number
+			output: string | number
+			enable: boolean
 		}
 	}
 	identify: {
@@ -308,6 +319,7 @@ export function UpdateActions(self: ModuleInstance): void {
 		ducker: undefined,
 		fbs: undefined,
 		front_panel: undefined,
+		front_panel_limit: undefined,
 		identify: undefined,
 		input_gain_level: undefined,
 		input_gain_level_decrease: undefined,
@@ -1475,7 +1487,7 @@ export function UpdateActions(self: ModuleInstance): void {
 
 		if (model.actions.includes('front_panel')) {
 			actions['front_panel'] = {
-				name: 'Set Front Panel Restrictions',
+				name: 'Set Front Panel Settings',
 				options: [
 					{
 						type: 'checkbox',
@@ -1497,14 +1509,67 @@ export function UpdateActions(self: ModuleInstance): void {
 					},
 				],
 				callback: async (event) => {
-					const params =
-						(event.options.recall_preset ? '1' : '0') +
-						',' +
-						(event.options.led_dimmer ? '1' : '0') +
-						',' +
-						(event.options.error_notice ? '1' : '0')
+					const params = [
+						event.options.recall_preset ? '1' : '0',
+						event.options.led_dimmer ? '1' : '0',
+						event.options.error_notice ? '1' : '0',
+					]
 
-					self.sendCommand('s_front_panel_limit', 'S', params)
+					// These three are s_front_panel (specification 4.143). s_front_panel_limit is the
+					// separate per channel restriction below, and takes four parameters of its own.
+					self.sendCommand('s_front_panel', 'S', params.join(','))
+				},
+			}
+		}
+
+		if (model.actions.includes('front_panel_limit')) {
+			actions['front_panel_limit'] = {
+				name: 'Set Front Panel Channel Restriction',
+				options: [
+					{
+						type: 'dropdown',
+						label: 'Function',
+						id: 'function',
+						default: '0',
+						choices: FRONT_PANEL_FUNCTIONS,
+					},
+					{
+						type: 'dropdown',
+						label: 'Target',
+						id: 'target',
+						default: '0',
+						choices: FRONT_PANEL_TARGETS,
+					},
+					{
+						type: 'dropdown',
+						label: 'Input Channel',
+						id: 'input',
+						default: model.input_channels[0].id,
+						// Sub inputs have no front panel control, so they are not offered here.
+						choices: model.input_channels.filter((CHANNEL) => Number(CHANNEL.id) <= 11),
+						isVisibleExpression: "$(options:target) == '0'",
+					},
+					{
+						type: 'dropdown',
+						label: 'Output Channel',
+						id: 'output',
+						default: model.output_channels[0].id,
+						choices: model.output_channels,
+						isVisibleExpression: "$(options:target) == '1'",
+					},
+					{
+						type: 'checkbox',
+						label: 'Allow Adjustment From The Front Panel',
+						id: 'enable',
+						default: true,
+					},
+				],
+				callback: async (event) => {
+					const channel = event.options.target == '1' ? event.options.output : event.options.input
+
+					const params = [event.options.function, event.options.target, channel, event.options.enable ? '1' : '0']
+
+					self.sendCommand('s_front_panel_limit', 'S', params.join(','))
 				},
 			}
 		}

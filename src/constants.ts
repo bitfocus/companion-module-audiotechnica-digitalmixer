@@ -1443,6 +1443,17 @@ export const OPERATOR_FADERS: Choice[] = [
 	{ id: 8, label: 'Fader 8' },
 ]
 
+/** Which front panel control is being restricted, specification 4.146. */
+export const FRONT_PANEL_FUNCTIONS: Choice[] = [
+	{ id: '0', label: 'Level' },
+	{ id: '1', label: 'Mute' },
+]
+
+export const FRONT_PANEL_TARGETS: Choice[] = [
+	{ id: '0', label: 'Input Channel' },
+	{ id: '1', label: 'Output Channel' },
+]
+
 /**
  * Smart Mix channel values are sent as raw steps rather than decibels, so each table maps the number on
  * the wire to the figure the mixer's own interface shows for it.

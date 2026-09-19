@@ -275,6 +275,7 @@ export const MODELS: Model[] = [
 			'save_preset',
 			'bootup_preset',
 			'front_panel',
+			'front_panel_limit',
 			'operator_mute',
 			'smartmix_mode',
 			'open_mic_limit',

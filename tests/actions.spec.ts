@@ -25,10 +25,31 @@ describe('system and preset actions', () => {
 		expect(h.sent).toContainEqual(['s_bootup_preset', 'S', '0'])
 	})
 
-	test('front panel restrictions send three flags', () => {
+	// Preset recall, the LED dimmer and the error display are s_front_panel. They were sent to
+	// s_front_panel_limit, which is the unrelated per channel restriction below, so the mixer rejected
+	// them and the front panel never changed.
+	test('front panel settings send three flags to s_front_panel', () => {
 		const h = makeInstance('atdm-1012')
 		h.fireAction('front_panel', { recall_preset: true, led_dimmer: true, error_notice: false })
-		expect(h.sent).toContainEqual(['s_front_panel_limit', 'S', '1,1,0'])
+		expect(h.sent).toContainEqual(['s_front_panel', 'S', '1,1,0'])
+	})
+
+	test('the front panel channel restriction sends function, target, channel and enable', () => {
+		const h = makeInstance('atdm-1012')
+
+		// the worked example from specification 4.146
+		h.fireAction('front_panel_limit', { function: '1', target: '1', output: '9', enable: true })
+		expect(h.sent).toContainEqual(['s_front_panel_limit', 'S', '1,1,9,1'])
+
+		h.fireAction('front_panel_limit', { function: '0', target: '0', input: '11', enable: false })
+		expect(h.sent).toContainEqual(['s_front_panel_limit', 'S', '0,0,11,0'])
+	})
+
+	test('the front panel channel restriction does not offer sub inputs', () => {
+		const options = makeInstance('atdm-1012').actions['front_panel_limit'].options
+		const ids = options.find((o: any) => o.id === 'input').choices.map((c: any) => c.id)
+
+		expect(ids).toEqual(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'])
 	})
 
 	test('operator mute carries the page on the ATDM-1012 only', () => {

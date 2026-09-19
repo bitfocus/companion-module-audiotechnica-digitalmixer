@@ -48,7 +48,8 @@ until the next poll.
 * Call Preset, Call Partial Preset, Save Preset, Set Boot Up Preset
 * Operator Page fader level and mute (ATDM-1012), Web Remote Operator Fader mute
 * Identify (blink the front panel LEDs)
-* Set Front Panel Restrictions (ATDM-1012)
+* Set Front Panel Settings - preset recall, LED dimmer, error display (ATDM-1012)
+* Set Front Panel Channel Restriction - whether the front panel may change a channel's level or mute (ATDM-1012)
 * Set Smart Mix Mode and Number of Open Mics (ATDM-1012)
 * Set Feedback Suppressor (ATDM-1012)
 * Set Ducker, USB Output and Oscillator test tone (ATDM-1012)
