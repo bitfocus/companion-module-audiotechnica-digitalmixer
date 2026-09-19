@@ -1,4 +1,4 @@
-import { InstanceBase, InstanceStatus, TCPHelper, type SomeCompanionConfigField } from '@companion-module/base'
+import { InstanceBase, type SomeCompanionConfigField } from '@companion-module/base'
 import { GetConfigFields, type ModuleConfig } from './config.js'
 import { UpgradeScripts } from './upgrades.js'
 import { UpdateActions, type ActionsSchema } from './actions.js'
@@ -10,6 +10,7 @@ import { createState, type ModuleState } from './state.js'
 import { processResponse } from './process-response.js'
 import { CommandQueue } from './command-queue.js'
 import { NoticeListener } from './notices.js'
+import { Link } from './link.js'
 import { CONTROL_NAK, describeError } from './utils.js'
 
 export type ModuleSchema = {
@@ -30,13 +31,12 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 	state: ModuleState = createState(undefined)
 	model: Model | undefined
 
-	private socket: TCPHelper | undefined
+	private link: Link | undefined
 	private queue: CommandQueue
 	private notices: NoticeListener | undefined
 
 	private pollTimer: NodeJS.Timeout | undefined
 	private uiUpdateTimer: NodeJS.Timeout | undefined
-	private reconnectTimer: NodeJS.Timeout | undefined
 	private pollsSinceFullSnapshot = 0
 
 	constructor(internal: unknown) {
@@ -44,11 +44,11 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 
 		this.queue = new CommandQueue({
 			write: (payload) => {
-				if (this.socket?.send(payload) === false) {
+				if (this.link?.send(payload) === false) {
 					this.log('error', 'Network error: the command could not be sent.')
 				}
 			},
-			isConnected: () => this.socket !== undefined && this.socket.isConnected,
+			isConnected: () => this.link?.isConnected === true,
 			processFrame: (frame) => {
 				if (frame.includes(CONTROL_NAK)) {
 					this.log('error', `Error: ${frame} Error type: ${describeError(frame)}`)
@@ -76,23 +76,13 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 			this.uiUpdateTimer = undefined
 		}
 
-		if (this.reconnectTimer !== undefined) {
-			clearTimeout(this.reconnectTimer)
-			this.reconnectTimer = undefined
-		}
-
-		this.socket?.destroy()
-		this.socket = undefined
+		this.link?.close()
+		this.link = undefined
 	}
 
 	async configUpdated(config: ModuleConfig): Promise<void> {
 		this.stopPolling()
 		this.notices?.stop()
-
-		if (this.reconnectTimer !== undefined) {
-			clearTimeout(this.reconnectTimer)
-			this.reconnectTimer = undefined
-		}
 
 		this.config = config
 		this.model = getModel(config.model)
@@ -129,53 +119,31 @@ export default class ModuleInstance extends InstanceBase<ModuleSchema> {
 	// --- connection -----------------------------------------------------------------------------
 
 	private initTCP(): void {
-		this.updateStatus(InstanceStatus.Connecting)
+		this.link?.close()
 
-		this.socket?.destroy()
-		this.socket = undefined
+		this.link = new Link({
+			host: this.config.host,
+			port: this.config.port > 0 ? this.config.port : 17300,
+			// Silence only means the link is dead if something was asked for in the first place.
+			expectsTraffic: () => this.config.polling === true,
+			onConnect: () => {
+				this.queue.reset()
 
-		if (!this.config.host) {
-			return
-		}
-
-		const socket = new TCPHelper(this.config.host, this.config.port > 0 ? this.config.port : 17300)
-		this.socket = socket
-
-		socket.on('status_change', (status, message) => {
-			this.updateStatus(status, message)
+				this.initNotices()
+				this.applyLevelMeterInterval()
+				this.requestDeviceInfo()
+				this.initPolling()
+			},
+			onDisconnect: () => {
+				this.stopPolling()
+				this.queue.clearResponseTimeout()
+			},
+			onData: (chunk) => this.queue.handleIncoming(chunk),
+			onStatus: (status, message) => this.updateStatus(status, message),
+			log: (level, message) => this.log(level, message),
 		})
 
-		socket.on('error', (err) => {
-			this.log('error', 'Network error: ' + err.message)
-			this.updateStatus(InstanceStatus.ConnectionFailure)
-			this.stopPolling()
-			this.queue.clearResponseTimeout()
-
-			this.socket?.destroy()
-			this.socket = undefined
-
-			if (err.message.includes('ECONNRESET') && this.reconnectTimer === undefined) {
-				this.reconnectTimer = setTimeout(() => {
-					this.reconnectTimer = undefined
-					this.initTCP()
-				}, 10000)
-			}
-		})
-
-		socket.on('connect', () => {
-			this.queue.reset()
-
-			this.initNotices()
-			this.applyLevelMeterInterval()
-			this.requestDeviceInfo()
-			this.initPolling()
-
-			this.updateStatus(InstanceStatus.Ok)
-		})
-
-		socket.on('data', (receivebuffer) => {
-			this.queue.handleIncoming(receivebuffer.toString('utf8'))
-		})
+		this.link.open()
 	}
 
 	private initNotices(): void {
