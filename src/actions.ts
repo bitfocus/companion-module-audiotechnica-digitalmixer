@@ -20,11 +20,6 @@ import {
 } from './constants.js'
 
 export type ActionsSchema = {
-	aec_calibration: {
-		options: {
-			action: string | number
-		}
-	}
 	arraymic_mute: {
 		options: {
 			mute: string | number
@@ -311,7 +306,6 @@ export function UpdateActions(self: ModuleInstance): void {
 	// Every action is declared so the schema is satisfied; the ones this model does not support
 	// stay undefined, which Companion treats as absent.
 	const actions: CompanionActionDefinitions<ActionsSchema> = {
-		aec_calibration: undefined,
 		arraymic_mute: undefined,
 		bootup_preset: undefined,
 		call_partial_preset: undefined,
@@ -1802,29 +1796,6 @@ export function UpdateActions(self: ModuleInstance): void {
 					}
 
 					self.sendCommand('s_oscillator', 'S', params.join(','))
-				},
-			}
-		}
-
-		if (model.actions.includes('aec_calibration')) {
-			actions['aec_calibration'] = {
-				name: 'AEC Calibration',
-				options: [
-					{
-						type: 'dropdown',
-						label: 'Action',
-						id: 'action',
-						default: 'test',
-						choices: [
-							{ id: 'test', label: 'Run Test' },
-							{ id: 'start', label: 'Start Measurement' },
-							{ id: 'stop', label: 'Stop Measurement' },
-						],
-					},
-				],
-				callback: async (event) => {
-					// The result arrives later as an aec_calibration_notice.
-					self.sendCommand(`aec_calibration_${event.options.action}`, 'S', '')
 				},
 			}
 		}

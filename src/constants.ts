@@ -1666,10 +1666,3 @@ export const EQ_FUNCTIONS: Choice[] = [
 	{ id: '2', label: 'Save to EQ Library' },
 	{ id: '3', label: 'Reset to Default' },
 ]
-
-export const AEC_CALIBRATION_RESULTS: Choice[] = [
-	{ id: '0', label: 'Normal' },
-	{ id: '1', label: 'Failed - reverb time over 250 ms' },
-	{ id: '2', label: 'Failed - delay time over 160 ms' },
-	{ id: '3', label: 'Timed out' },
-]

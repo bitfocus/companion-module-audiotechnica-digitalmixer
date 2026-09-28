@@ -141,7 +141,6 @@ export interface ModuleState {
 	partial_preset_number: string
 	firmware_version: string
 	device_id: string
-	aec_calibration_result: string
 }
 
 export function createState(_model: Model | undefined): ModuleState {
@@ -179,6 +178,5 @@ export function createState(_model: Model | undefined): ModuleState {
 		partial_preset_number: '',
 		firmware_version: '',
 		device_id: '',
-		aec_calibration_result: '',
 	}
 }

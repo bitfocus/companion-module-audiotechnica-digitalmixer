@@ -118,15 +118,6 @@ describe('system and preset actions', () => {
 		expect(call?.[2]).toBe('21,3,1,1,0,0,0,0,0,0,1')
 	})
 
-	test('AEC calibration sends the command for the chosen step', () => {
-		const h = makeInstance('atdm-0604a')
-		h.fireAction('aec_calibration', { action: 'start' })
-		expect(h.sent).toContainEqual(['aec_calibration_start', 'S', ''])
-
-		h.fireAction('aec_calibration', { action: 'stop' })
-		expect(h.sent).toContainEqual(['aec_calibration_stop', 'S', ''])
-	})
-
 	test('output EQ recall sends channel, action and library number', () => {
 		const h = makeInstance('atdm-1012')
 		h.fireAction('output_12eq_func', { output: '9', processing_type: '3', preset: 1 })

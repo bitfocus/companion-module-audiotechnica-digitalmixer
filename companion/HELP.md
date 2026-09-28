@@ -55,7 +55,6 @@ until the next poll.
 * Set Ducker, USB Output and Oscillator test tone (ATDM-1012)
 * Recall, save, flatten or reset an Output EQ library (ATDM-1012)
 * Set Smart Mix channel settings - gain share weight, priority, can cut, closed mic attenuation, threshold (ATDM-1012)
-* Run AEC Calibration (ATDM-0604, ATDM-0604a)
 
 **Available Feedbacks:**
 * Phantom Power is On
@@ -66,7 +65,6 @@ until the next poll.
 * Output Mute is On
 * Operator Fader is Muted (ATDM-1012)
 * Recorder Status (ATDM-1012)
-* AEC Calibration Result (ATDM-0604, ATDM-0604a)
 
 **Available Variables:**
 * Input Gain Level (Mic Gain, Line Gain, Level Mute)

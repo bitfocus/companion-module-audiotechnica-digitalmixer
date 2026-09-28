@@ -688,10 +688,6 @@ export function processResponse(self: ResponseHost, response: string): void {
 			}
 			break
 
-		case 'aec_calibration_notice':
-			self.state.aec_calibration_result = params[0].toString()
-			break
-
 		case 'arraymic_mute_notice':
 		case 'g_arraymic_mute':
 			// The ATDM-1012 reports which virtual mic changed, the ATDM-0604 has only one.

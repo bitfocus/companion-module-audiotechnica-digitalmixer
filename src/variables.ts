@@ -1,7 +1,6 @@
 import type { CompanionVariableDefinitions, CompanionVariableValues } from '@companion-module/base'
 import type ModuleInstance from './main.js'
 import {
-	AEC_CALIBRATION_RESULTS,
 	LEVEL_METER_POINTS,
 	RECORDER_STATUS,
 	output_channel_settings_fadergroups,
@@ -260,10 +259,6 @@ export function UpdateVariableDefinitions(self: ModuleInstance): void {
 			variables.push({ variableId: `rec_status`, name: `Recorder Status` })
 		}
 
-		if (model.variables.includes('aec_calibration')) {
-			variables.push({ variableId: `aec_calibration_result`, name: `AEC Calibration Result` })
-		}
-
 		if (model.variables.includes('level_meter')) {
 			const meterPoints = LEVEL_METER_POINTS[model.id] || []
 
@@ -499,11 +494,6 @@ export function checkVariables(self: ModuleInstance): void {
 			if (model.variables.includes('rec_status')) {
 				const recorderStatusObj = RECORDER_STATUS.find((STATUS) => STATUS.id == self.state.rec_status)
 				self.setVariableValues({ rec_status: recorderStatusObj ? recorderStatusObj.label : '' })
-			}
-
-			if (model.variables.includes('aec_calibration')) {
-				const aecResultObj = AEC_CALIBRATION_RESULTS.find((RESULT) => RESULT.id == self.state.aec_calibration_result)
-				self.setVariableValues({ aec_calibration_result: aecResultObj ? aecResultObj.label : '' })
 			}
 
 			if (model.variables.includes('level_meter')) {

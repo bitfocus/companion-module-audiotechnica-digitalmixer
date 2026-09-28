@@ -98,11 +98,6 @@ describe('notification parsing', () => {
 		expect(host.state.cancut[1]).toEqual({ id: '1', status: true })
 	})
 
-	test('AEC calibration result notification is recorded', () => {
-		processResponse(host, 'MD aec_calibration_notice 0000 00 NC 3 ')
-		expect(host.state.aec_calibration_result).toBe('3')
-	})
-
 	test('level meter notification fills every monitor point in order', () => {
 		const levels = Array.from({ length: 42 }, (_, i) => i)
 		processResponse(host, 'MD level_meter_notice 0000 00 NC ' + levels.join(',') + ' ')

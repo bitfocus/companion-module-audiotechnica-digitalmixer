@@ -46,7 +46,6 @@ export const MODELS: Model[] = [
 			'save_preset',
 			'bootup_preset',
 			'operator_mute',
-			'aec_calibration',
 			'fbs',
 		],
 		feedbacks: [
@@ -71,7 +70,6 @@ export const MODELS: Model[] = [
 			'level_meter',
 			'device_info',
 			'preset_names',
-			'aec_calibration',
 		],
 		data_request: [
 			'input_channel_settings',
@@ -158,7 +156,6 @@ export const MODELS: Model[] = [
 			'save_preset',
 			'bootup_preset',
 			'operator_mute',
-			'aec_calibration',
 			'fbs',
 		],
 		feedbacks: [
@@ -184,7 +181,6 @@ export const MODELS: Model[] = [
 			'open_channel_notice',
 			'device_info',
 			'preset_names',
-			'aec_calibration',
 		],
 		data_request: [
 			'input_channel_settings',
